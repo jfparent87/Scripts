@@ -11,13 +11,7 @@ public class VideoInstanciator : MonoBehaviour {
 
     void Start()
     {
-        position = this.transform.position;
-        position.z = position.z + 0.2f;
-        position.y = position.y + 0.35f;
-        rotation = this.gameObject.transform.rotation;
-        rotation.w -= 1.0f;
-        rotation.y -= 0.7f;
-        rotation.z += 0.7f;
+        resetPosition();
     }
 
     // Called by GazeGestureManager when the user performs a Select gesture
@@ -32,8 +26,22 @@ public class VideoInstanciator : MonoBehaviour {
         else
         {
             instantiatedObject.GetComponent<VideoController>().movie.Stop();
+            position = instantiatedObject.transform.position;
+            rotation = instantiatedObject.transform.rotation;
             Destroy(instantiatedObject);
             isCreated = false;
         }
+    }
+
+    public void resetPosition()
+    {
+        position = this.transform.position;
+        position.z = position.z + 0.02f;
+        position.y = position.y + 0.35f;
+        rotation = this.gameObject.transform.rotation;
+        rotation.w -= 1.0f;
+        rotation.x = 0.0f;
+        rotation.y -= 0.7f;
+        rotation.z += 0.7f;
     }
 }

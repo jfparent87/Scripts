@@ -3,6 +3,7 @@
 public class TapToPlaceParent : MonoBehaviour
 {
     bool placing = false;
+    public VideoInstanciator videoInstanciator;
 
     // Called by GazeGestureManager when the user performs a Select gesture
     void OnSelect()
