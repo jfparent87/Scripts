@@ -6,8 +6,8 @@ public class VideoInstanciator : MonoBehaviour {
     public bool isCreated = false;
     public GameObject video;
     public GameObject instantiatedObject;
-    Vector3 position;
-    Quaternion rotation;
+    public Vector3 position;
+    public Quaternion rotation;
 
     void Start()
     {
@@ -43,5 +43,12 @@ public class VideoInstanciator : MonoBehaviour {
         rotation.x = 0.0f;
         rotation.y -= 0.7f;
         rotation.z += 0.7f;
+    }
+
+    public void instantiateToPlace() {
+        instantiatedObject = (GameObject)Instantiate(video, position, rotation);
+        instantiatedObject.transform.parent = gameObject.transform.parent;
+        isCreated = true;
+        instantiatedObject.GetComponent<VideoController>().stopVideo();
     }
 }

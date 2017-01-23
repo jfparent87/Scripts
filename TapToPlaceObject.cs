@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 
-public class TapToPlaceParent : MonoBehaviour
+public class TapToPlaceObject : MonoBehaviour
 {
-    public bool placing = false;
-    public VideoInstanciator videoInstanciator;
+    bool placing = false;
 
     // Called by GazeGestureManager when the user performs a Select gesture
     void OnSelect()
@@ -31,15 +30,7 @@ public class TapToPlaceParent : MonoBehaviour
 
         if (placing)
         {
-            if (videoInstanciator.isCreated)
-            {
-                videoInstanciator.instantiatedObject.GetComponent<VideoController>().stopVideo();
-            }
-            
-            if (!videoInstanciator.isCreated) {
-                videoInstanciator.instantiateToPlace();
-                videoInstanciator.instantiatedObject.GetComponent<VideoController>().stopVideo();
-            }
+
             // Do a raycast into the world that will only hit the Spatial Mapping mesh.
             var headPosition = Camera.main.transform.position;
             var gazeDirection = Camera.main.transform.forward;
@@ -50,13 +41,13 @@ public class TapToPlaceParent : MonoBehaviour
             {
                 // Move this object's parent object to
                 // where the raycast hit the Spatial Mapping mesh.
-                this.transform.parent.position = hitInfo.point;
+                this.transform.position = hitInfo.point;
 
                 // Rotate this object's parent object to face the user.
                 Quaternion toQuat = Camera.main.transform.localRotation;
                 toQuat.x = 0;
                 toQuat.z = 0;
-                this.transform.parent.rotation = toQuat;
+                this.transform.rotation = toQuat;
             }
         }
     }
