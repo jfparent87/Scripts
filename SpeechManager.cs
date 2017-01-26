@@ -2,11 +2,13 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Windows.Speech;
+using UnityEngine.SceneManagement;
 
 public class SpeechManager : MonoBehaviour
 {
     KeywordRecognizer keywordRecognizer = null;
     Dictionary<string, System.Action> keywords = new Dictionary<string, System.Action>();
+    public Instanciator intanciator;
 
     // Use this for initialization
     void Start()
@@ -14,17 +16,12 @@ public class SpeechManager : MonoBehaviour
         keywords.Add("Reset world", () =>
         {
             // Call the OnReset method on every descendant object.
-            this.BroadcastMessage("OnReset");
+            SceneManager.LoadScene("VideoTest");
         });
 
-        keywords.Add("Drop Sphere", () =>
+        keywords.Add("Show horse", () =>
         {
-            var focusObject = GazeGestureManager.Instance.FocusedObject;
-            if (focusObject != null)
-            {
-                // Call the OnDrop method on just the focused object.
-                focusObject.SendMessage("OnDrop");
-            }
+            intanciator.show();
         });
 
         // Tell the KeywordRecognizer about our keywords.
