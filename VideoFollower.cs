@@ -4,7 +4,7 @@ using System.Collections;
 public class VideoFollower : MonoBehaviour {
 
     public VideoInstanciator videoInstanciator;
-    public bool follow = false;
+    public bool follow = true;
 
     // Called by GazeGestureManager when the user performs a Select gesture
     void OnSelect()

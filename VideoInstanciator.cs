@@ -51,4 +51,26 @@ public class VideoInstanciator : MonoBehaviour {
         isCreated = true;
         instantiatedObject.GetComponent<VideoController>().stopVideo();
     }
+
+    public void proximityInstanciate()
+    {
+        if (!isCreated)
+        {
+            instantiatedObject = (GameObject)Instantiate(video, position, rotation);
+            instantiatedObject.transform.parent = gameObject.transform.parent;
+            isCreated = true;
+        }
+    }
+
+    public void proximityDestroy()
+    {
+        if (isCreated)
+        {
+            instantiatedObject.GetComponent<VideoController>().movie.Stop();
+            position = instantiatedObject.transform.position;
+            rotation = instantiatedObject.transform.rotation;
+            Destroy(instantiatedObject);
+            isCreated = false;
+        }
+    }
 }
