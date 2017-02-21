@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class VideoInstanciator2 : Instanciator2 {
 
     public override void OnSelect()
     {
+        resetPosition();
         if (!isCreated)
         {
             instantiatedObject = (GameObject)Instantiate(video, position, rotation);

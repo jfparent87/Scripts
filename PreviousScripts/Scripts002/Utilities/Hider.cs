@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Hider : MonoBehaviour {
 
-    Vector3 previousSize; 
+    public Vector3 previousSize;
+    public bool showing;
 
     void Start()
     {
@@ -12,10 +12,12 @@ public class Hider : MonoBehaviour {
 
     public void hide() {
         this.gameObject.transform.localScale = new Vector3(0,0,0);
+        showing = false;
     }
 
     public void show()
     {
         this.gameObject.transform.localScale = previousSize;
+        showing = true;
     }
 }

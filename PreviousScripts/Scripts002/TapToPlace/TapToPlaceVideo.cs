@@ -1,12 +1,30 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class TapToPlaceVideo : TapToPlace {
+public class TapToPlaceVideo : TapToPlace
+{
 
-    public VideoInstanciator2 videoInstanciator;
-    public 
+    public VideoInstanciator videoInstanciator;
 
-    override void Update()
+    public override void OnSelect()
+    {
+        // On each Select gesture, toggle whether the user is in placing mode.
+        placing = !placing;
+
+        // If the user is in placing mode, display the spatial mapping mesh.
+        if (placing)
+        {
+            SpatialMapping.Instance.DrawVisualMeshes = true;
+            //anchorManager.RemoveAnchor(this.transform.parent.gameObject);
+        }
+        // If the user is not in placing mode, hide the spatial mapping mesh.
+        else
+        {
+            SpatialMapping.Instance.DrawVisualMeshes = false;
+            //anchorManager.AttachAnchor(this.transform.parent.gameObject, parentAnchor.SavedAnchorFriendlyName);
+        }
+    }
+
+    public override void Update()
     {
         // If the user is in placing mode,
         // update the placement to match the user's gaze.

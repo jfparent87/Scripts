@@ -11,13 +11,11 @@ public class SpeechManager2 : MonoBehaviour
     public Instanciator intanciator;
     public List<Hider> buttons;
 
-    // Use this for initialization
     void Start()
     {
         keywords.Add("Reset world", () =>
         {
-            // Call the OnReset method on every descendant object.
-            SceneManager.LoadScene("VideoTest");
+            SceneManager.LoadScene("Scene002");
         });
 
         keywords.Add("Show horse", () =>

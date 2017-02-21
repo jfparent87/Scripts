@@ -37,7 +37,7 @@ public class VideoInstanciator : MonoBehaviour {
     {
         position = this.transform.position;
         position.z = position.z + 0.02f;
-        position.y = position.y + 0.35f;
+        position.y = position.y + 0.15f;
         rotation = this.gameObject.transform.rotation;
         rotation.w -= 1.0f;
         rotation.x = 0.0f;

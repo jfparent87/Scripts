@@ -9,6 +9,8 @@ abstract public class Instanciator2 : MonoBehaviour
     public Vector3 position;
     public Quaternion rotation;
     public float proximityTrigger = 2.5f;
+    public float proximityStop = 3f;
+    public ButtonsManager buttonManager;
     float distance;
 
     void Start()
@@ -29,7 +31,6 @@ abstract public class Instanciator2 : MonoBehaviour
         }
         else
         {
-            //instantiatedObject.GetComponent<VideoController>().movie.Stop();
             position = instantiatedObject.transform.position;
             rotation = instantiatedObject.transform.rotation;
             Destroy(instantiatedObject);
@@ -81,7 +82,7 @@ abstract public class Instanciator2 : MonoBehaviour
         {
             proximityInstanciate();
         }
-        if (distance > proximityTrigger && isCreated)
+        if (distance > proximityStop && isCreated)
         {
             proximityDestroy();
         }

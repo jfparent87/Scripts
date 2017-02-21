@@ -1,31 +1,28 @@
 ﻿using UnityEngine;
 using HoloToolkit.Unity;
 using HoloToolkit.Unity.SpatialMapping;
+using System.Collections.Generic;
 
-abstract public class TapToPlace : MonoBehaviour
+public class TapToPlaceCookingPot : MonoBehaviour
 {
-    public bool placing = false;
+    bool placing = false;
+    public List<Ingredients> ingredients;
 
     // Called by GazeGestureManager when the user performs a Select gesture
-    virtual public void OnSelect()
+    void OnSelect()
     {
-        // On each Select gesture, toggle whether the user is in placing mode.
         placing = !placing;
-
-        // If the user is in placing mode, display the spatial mapping mesh.
-        if (placing)
+        if(!placing)
         {
-            SpatialMapping.Instance.DrawVisualMeshes = true;
-        }
-        // If the user is not in placing mode, hide the spatial mapping mesh.
-        else
-        {
-            SpatialMapping.Instance.DrawVisualMeshes = false;
+            for (int i = 0; i < ingredients.Count; i++)
+            {
+                ingredients[i].resetTarget();
+            }
         }
     }
 
     // Update is called once per frame
-    virtual public void Update()
+    void Update()
     {
         // If the user is in placing mode,
         // update the placement to match the user's gaze.

@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
+using System.Collections;
 
-abstract public class Commands : MonoBehaviour {
+public class VideoFollower2 : MonoBehaviour
+{
 
     public VideoInstanciator2 videoInstanciator;
     public bool follow = true;
 
-    virtual public void OnSelect()
+    // Called by GazeGestureManager when the user performs a Select gesture
+    void OnSelect()
     {
         if (!follow)
         {
@@ -17,7 +20,7 @@ abstract public class Commands : MonoBehaviour {
         }
     }
 
-    virtual public void Update()
+    void Update()
     {
         if (videoInstanciator.instantiatedObject != null && follow)
         {

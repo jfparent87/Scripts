@@ -2,10 +2,12 @@
 using HoloToolkit.Unity;
 using HoloToolkit.Unity.SpatialMapping;
 
-public class VideoCommands2 : Commands {
-    public VideoAnchor parentAnchor;
+public class VideoAnchor : MonoBehaviour
+{
+    bool placing = false;
     protected WorldAnchorManager anchorManager;
     protected SpatialMappingManager spatialMappingManager;
+    public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
 
     void Start()
     {
@@ -21,19 +23,15 @@ public class VideoCommands2 : Commands {
         {
             Debug.LogError("This script expects that you have a SpatialMappingManager component in your scene.");
         }
-    }
 
-    public override void Update()
-    {
-        if (videoInstanciator.instantiatedObject != null && follow)
+        if (anchorManager != null && spatialMappingManager != null)
         {
-            //anchorManager.RemoveAnchor(this.transform.parent.gameObject);
-            // Rotate this object's parent object to face the user.
-            Quaternion toQuat = Camera.main.transform.localRotation;
-            toQuat.x = 0;
-            toQuat.z = 0;
-            videoInstanciator.instantiatedObject.transform.parent.rotation = toQuat;
-            //anchorManager.AttachAnchor(this.transform.parent.gameObject, parentAnchor.SavedAnchorFriendlyName);
+            anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
+        }
+        else
+        {
+            // If we don't have what we need to proceed, we may as well remove ourselves.
+            Destroy(this);
         }
     }
 }
