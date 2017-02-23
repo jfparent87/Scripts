@@ -24,7 +24,7 @@ public class GhostZone : MonoBehaviour {
         if (!ghostObject.GetComponent<Hider>().showing && !placeGhostZone)
         {
             GetComponentInChildren<TapToPlaceGhost>().resetTargetPosition();
-            ghostObject.GetComponent<Hider>().previousSize = new Vector3(0.8f, 0.8f, 0.8f);
+            ghostObject.GetComponent<Hider>().previousSize = new Vector3(0.1f, 0.1f, 0.1f);
             ghostObject.GetComponent<Hider>().show();
             ghostObject.GetComponent<TapToPlaceGhost>().move = true;
         }

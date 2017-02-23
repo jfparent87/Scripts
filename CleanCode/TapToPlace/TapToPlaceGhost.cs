@@ -71,6 +71,9 @@ public class TapToPlaceGhost : MonoBehaviour
         float step = speed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
 
+        Vector3 newSize = new Vector3(transform.localScale.x * 8.0f, transform.localScale.y * 8.0f, transform.localScale.z * 8.0f);
+        transform.localScale = Vector3.MoveTowards(transform.localScale, newSize, step);
+
         if (!targetPositionAchievedOnce)
         {
             Quaternion toQuat = Camera.main.transform.localRotation;
@@ -85,7 +88,22 @@ public class TapToPlaceGhost : MonoBehaviour
     {
         float step = speed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, ghostZonePosition, step);
+
+        Vector3 newSize = new Vector3(transform.localScale.x / 8.0f, transform.localScale.y / 8.0f, transform.localScale.z / 8.0f);
+        transform.localScale = Vector3.MoveTowards(transform.localScale, newSize, step);
+
         Quaternion toQuat = GetComponentInParent<Transform>().rotation;
         this.transform.rotation = toQuat;
+    }
+
+    void SetLocalScale()
+    {
+
+        var newSize = new Vector3(transform.localScale.x * 1.5f, transform.localScale.y * 1.5f, transform.localScale.z * 1.5f);
+
+        while (Vector3.Distance(transform.root.localScale, newSize) > 0)
+        {
+            transform.root.localScale = Vector3.MoveTowards(transform.root.localScale, newSize, Time.deltaTime * 10);
+        }
     }
 }
