@@ -2,11 +2,22 @@
 
 public class TapToPlaceCampfire : MonoBehaviour
 {
+
     bool placing = false;
+    public RoomManager roomManager;
+    public TapToPlaceCookingPot tapToPlaceCookingPot;
 
     void OnSelect()
     {
-        placing = !placing;
+        if (roomManager.editionMode)
+        {
+            placing = !placing;
+            if (!placing)
+            {
+                tapToPlaceCookingPot.resetTargetFireTwo();
+                tapToPlaceCookingPot.resetTargetFireThree();
+            }
+        }
     }
 
     void Update()

@@ -1,27 +1,47 @@
 ﻿using UnityEngine;
+using HoloToolkit.Unity;
+using HoloToolkit.Unity.SpatialMapping;
 
 public class GhostZone : MonoBehaviour {
 
     public GameObject ghostObject;
     public GameObject hololensCamera;
     public float speed = 0.5f;
-    private bool placeGhostZone;
+    public RoomManager roomManager;
     private Vector3 targetPosition;
-    private int selectCounter = 0;
     private bool placing = false;
-
+    protected WorldAnchorManager anchorManager;
+    protected SpatialMappingManager spatialMappingManager;
 
     void Start()
     {
+        anchorManager = WorldAnchorManager.Instance;
+        if (anchorManager == null)
+        {
+            Debug.LogError("This script expects that you have a WorldAnchorManager component in your scene.");
+        }
+
+        spatialMappingManager = SpatialMappingManager.Instance;
+        if (spatialMappingManager == null)
+        {
+            Debug.LogError("This script expects that you have a SpatialMappingManager component in your scene.");
+        }
+
         targetPosition = hololensCamera.transform.position;
-        placeGhostZone = true;
-        this.GetComponentInChildren<Hider>().hide();
+        if (!roomManager.editionMode)
+        {
+            this.GetComponentInChildren<Hider>().hide();
+        }
+        else
+        {
+            this.GetComponentInChildren<Hider>().show();
+        }
     }
 
-    void OnSelect()
+    public void selected()
     {
 
-        if (!ghostObject.GetComponent<Hider>().showing && !placeGhostZone)
+        if (!ghostObject.GetComponent<Hider>().showing && !roomManager.editionMode)
         {
             GetComponentInChildren<TapToPlaceGhost>().resetTargetPosition();
             ghostObject.GetComponent<Hider>().previousSize = new Vector3(0.1f, 0.1f, 0.1f);
@@ -29,22 +49,25 @@ public class GhostZone : MonoBehaviour {
             ghostObject.GetComponent<TapToPlaceGhost>().move = true;
         }
 
-        selectCounter++;
-        if (selectCounter == 2)
-        {
-            placeGhostZone = false;
-            GetComponentInChildren<TapToPlaceGhost>().resetTargetPosition();
-        }
-
-        if (placeGhostZone)
+        if (roomManager.editionMode)
         {
             placing = !placing;
+
+            if (placing)
+            {
+                freeAnchor();
+            }
+            if (!placing)
+            {
+                lockAnchor();
+                GetComponentInChildren<TapToPlaceGhost>().resetTargetPosition();
+            }
         }
     }
 
     void Update()
     {
-        if (placing && placeGhostZone)
+        if (placing && roomManager.editionMode)
         {
             var headPosition = Camera.main.transform.position;
             var gazeDirection = Camera.main.transform.forward;
@@ -64,5 +87,15 @@ public class GhostZone : MonoBehaviour {
                 this.transform.rotation = toQuat;
             }
         }
+    }
+
+    public void freeAnchor()
+    {
+        anchorManager.RemoveAnchor(this.transform.gameObject);
+    }
+
+    public void lockAnchor()
+    {
+        anchorManager.AttachAnchor(this.transform.gameObject, this.GetComponent<GhostAnchor>().SavedAnchorFriendlyName);
     }
 }

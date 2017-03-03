@@ -32,6 +32,7 @@ public class Ingredients : MonoBehaviour {
     {
         if (collider.GetComponent<Collider>().name == "CookingPotTriggerZone")
         {
+            resetTarget();
             nearCookingPot = true;
         }
     }
@@ -77,6 +78,7 @@ public class Ingredients : MonoBehaviour {
     IEnumerator waitAndDestroy()
     {
         yield return new WaitForSeconds(0.5f);
+        cookingPot.GetComponent<TapToPlaceCookingPot>().ingredients.Remove(this);
         Destroy(this.gameObject);
     }
 }

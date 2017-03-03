@@ -7,6 +7,7 @@ public class TapToPlaceGhost : MonoBehaviour
     public float speed;
     public GameObject mainCamera;
     public GameObject ghostZone;
+    public RoomManager roomManager;
     private Vector3 targetPosition;
     private Vector3 ghostZonePosition;
     private bool targetPositionAchieved;
@@ -20,41 +21,58 @@ public class TapToPlaceGhost : MonoBehaviour
 
     void OnSelect()
     {
-        move = !move;
+        if (roomManager.editionMode)
+        {
+            ghostZone.GetComponent<GhostZone>().selected();
+        }
+        else
+        {
+            move = !move;
+        }
     }
 
     void Update()
     {
-        if (transform.position == targetPosition)
+        if (!roomManager.editionMode)
         {
-            targetPositionAchieved = true;
+            if (transform.position == targetPosition)
+            {
+                targetPositionAchieved = true;
+            }
+            else
+            {
+                targetPositionAchieved = false;
+            }
+
+            if (move && !targetPositionAchieved)
+            {
+                moveToUser();
+            }
+
+            if (move && targetPositionAchieved)
+            {
+                targetPositionAchievedOnce = true;
+                transform.Rotate(Vector3.up, speed * ROTATION_SPEED * Time.deltaTime);
+            }
+
+            if (!move && transform.position != ghostZonePosition)
+            {
+                moveToGhostZone();
+            }
+
+            if (!move && transform.position == ghostZonePosition)
+            {
+                GetComponent<Hider>().hide();
+                targetPositionAchieved = false;
+                targetPositionAchievedOnce = false;
+            }
         }
         else
         {
-            targetPositionAchieved = false;
-        }
-
-        if (move && !targetPositionAchieved)
-        {
-            moveToUser();
-        }
-
-        if (move && targetPositionAchieved)
-        {
-            targetPositionAchievedOnce = true;
-            transform.Rotate(Vector3.up, speed * ROTATION_SPEED * Time.deltaTime);
-        }
-
-        if (!move && transform.position != ghostZonePosition)
-        {
-            moveToGhostZone();
-        }
-
-        if (!move && transform.position == ghostZonePosition)
-        {
-            GetComponent<Hider>().hide();
-            targetPositionAchieved = false;
-            targetPositionAchievedOnce = false;
+            if (!GetComponent<Hider>().showing)
+            {
+                GetComponent<Hider>().show();
+            }
         }
     }
 

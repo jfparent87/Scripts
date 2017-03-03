@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using HoloToolkit.Unity;
 using HoloToolkit.Unity.SpatialMapping;
+using System.Collections;
 
 public class TapToPlaceClip : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class TapToPlaceClip : MonoBehaviour
     public VideoHider videoHider;
     public GameObject hololensCamera;
     public float speed = 0.5f;
+    public RoomManager roomManager;
     protected WorldAnchorManager anchorManager;
     protected SpatialMappingManager spatialMappingManager;
     private Vector3 targetPosition;
@@ -32,13 +34,13 @@ public class TapToPlaceClip : MonoBehaviour
     {
         placing = !placing;
 
-        if (placing)
+        if (placing && roomManager.editionMode)
         {
-            anchorManager.RemoveAnchor(this.transform.parent.gameObject);
+            freeAnchor();
         }
-        else
+        if (!placing && roomManager.editionMode)
         {
-            anchorManager.AttachAnchor(this.transform.parent.gameObject, GetComponentInParent<VideoAnchor>().SavedAnchorFriendlyName);
+            lockAnchor();
         }
     }
 
@@ -74,5 +76,21 @@ public class TapToPlaceClip : MonoBehaviour
                 this.transform.parent.rotation = toQuat;
             }
         }
+    }
+
+    public void freeAnchor()
+    {
+        anchorManager.RemoveAnchor(this.transform.parent.gameObject);
+    }
+
+    public void lockAnchor()
+    {
+        anchorManager.AttachAnchor(this.transform.parent.gameObject, this.GetComponentInParent<VideoAnchor>().SavedAnchorFriendlyName);
+    }
+
+    IEnumerator waitAndFreeAnchor()
+    {
+        yield return new WaitForSeconds(0.5f);
+        freeAnchor();
     }
 }

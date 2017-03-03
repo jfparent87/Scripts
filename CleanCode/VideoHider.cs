@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class VideoHider : MonoBehaviour
 {
@@ -8,13 +9,15 @@ public class VideoHider : MonoBehaviour
     public float proximityPlay = 2.5f;
     public float proximityStop = 3f;
     public float distance;
+    public bool checkDistance;
 
     void Start()
     {
         distance = Vector3.Distance(Camera.main.transform.position, this.transform.position);
-        InvokeRepeating("verifyDistance", 2.0f, 2.0f);
-        video.GetComponent<VideoController>().movie.Stop();
+        checkDistance = true;
+        video.GetComponent<VideoController>().stopVideo();
         video.GetComponent<Hider>().hide();
+        StartCoroutine(distanceCheck());
     }
 
     void OnSelect()
@@ -35,7 +38,7 @@ public class VideoHider : MonoBehaviour
         {
             video.GetComponent<Hider>().previousSize = new Vector3(0.08f, 0.2f, 0.06f);
             video.GetComponent<Hider>().show();
-            video.GetComponent<VideoController>().movie.Play();
+            video.GetComponent<VideoController>().playVideo();
             isCreated = true;
         }
     }
@@ -44,7 +47,7 @@ public class VideoHider : MonoBehaviour
     {
         if (isCreated)
         {
-            video.GetComponent<VideoController>().movie.Stop();
+            video.GetComponent<VideoController>().stopVideo();
             video.GetComponent<Hider>().hide();
             isCreated = false;
         }
@@ -55,12 +58,20 @@ public class VideoHider : MonoBehaviour
         distance = Vector3.Distance(Camera.main.transform.position, this.transform.position);
         if (distance < proximityPlay && !isCreated)
         {
-            Debug.Log("instanciate");
             instanciate();
         }
         if (distance > proximityStop && isCreated)
         {
             destroy();
+        }
+    }
+
+    IEnumerator distanceCheck()
+    {
+        while (checkDistance)
+        {
+            yield return new WaitForSeconds(2.0f);
+            verifyDistance();
         }
     }
 }
