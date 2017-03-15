@@ -28,6 +28,8 @@ public class TapToPlaceCookingPot : MonoBehaviour
 
     void OnSelect()
     {
+        resetTargetFireTwo();
+        resetTargetFireThree();
         if (!locked)
         {
             placing = !placing;

@@ -13,10 +13,12 @@ public class TapToPlaceGhost : MonoBehaviour
     private bool targetPositionAchieved;
     private bool targetPositionAchievedOnce = false;
     private const float ROTATION_SPEED = 10.0F;
+    private Vector3 newSize;
 
     private void Start()
     {
         resetTargetPosition();
+        newSize = new Vector3(transform.localScale.x * 8.0f, transform.localScale.y * 8.0f, transform.localScale.z * 8.0f);
     }
 
     void OnSelect()
@@ -89,8 +91,10 @@ public class TapToPlaceGhost : MonoBehaviour
         float step = speed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
 
-        Vector3 newSize = new Vector3(transform.localScale.x * 8.0f, transform.localScale.y * 8.0f, transform.localScale.z * 8.0f);
-        transform.localScale = Vector3.MoveTowards(transform.localScale, newSize, step);
+        if (transform.localScale.x <= newSize.x)
+        {
+            transform.localScale = Vector3.MoveTowards(transform.localScale, newSize, step);
+        }
 
         if (!targetPositionAchievedOnce)
         {

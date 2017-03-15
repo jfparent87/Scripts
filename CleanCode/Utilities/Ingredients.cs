@@ -4,6 +4,7 @@ using System.Collections;
 public class Ingredients : MonoBehaviour {
 
     public GameObject cookingPot;
+    public GameObject whiteSmoke;
     public float speed = 0.2f;
     private bool nearCookingPot = false;
     private bool overCookingPotAchieved = false;
@@ -63,6 +64,7 @@ public class Ingredients : MonoBehaviour {
             transform.position = Vector3.MoveTowards(transform.position, insideCookingPot, step);
             if (!audioPlayed)
             {
+                whiteSmoke.GetComponent<ParticleSystem>().Play();
                 this.GetComponent<AudioSource>().Play();
                 audioPlayed = true;
             }
@@ -79,6 +81,7 @@ public class Ingredients : MonoBehaviour {
     {
         yield return new WaitForSeconds(0.5f);
         cookingPot.GetComponent<TapToPlaceCookingPot>().ingredients.Remove(this);
+        whiteSmoke.GetComponent<ParticleSystem>().Stop();
         Destroy(this.gameObject);
     }
 }
