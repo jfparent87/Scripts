@@ -4,16 +4,19 @@ using HoloToolkit.Unity.SpatialMapping;
 
 public class CampfireAnchor : MonoBehaviour
 {
-    bool placing = false;
-    public RoomManager roomManager;
+    
     public GameObject campfire;
+    public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
+
+    private bool placing = false;
+    private RoomManager roomManager;
     protected WorldAnchorManager anchorManager;
     protected SpatialMappingManager spatialMappingManager;
-    public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
 
     void Start()
     {
-        // Make sure we have all the components in the scene we need.
+
+        roomManager = GetComponentInParent<RoomManager>();
         anchorManager = WorldAnchorManager.Instance;
         if (anchorManager == null)
         {
@@ -30,17 +33,14 @@ public class CampfireAnchor : MonoBehaviour
         {
             anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
         }
-        else
-        {
-            Destroy(this);
-        }
+
     }
 
     private void Update()
     {
-        if (roomManager.editionMode)
+        if (roomManager.editionMode && transform.position != campfire.transform.position)
         {
-            this.transform.position = campfire.transform.position;
+            transform.position = campfire.transform.position;
         }
     }
 }

@@ -4,14 +4,15 @@ using HoloToolkit.Unity.SpatialMapping;
 
 public class ActivationZoneAnchor : MonoBehaviour
 {
-    bool placing = false;
+
+    public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
+
+    private bool placing = false;
     protected WorldAnchorManager anchorManager;
     protected SpatialMappingManager spatialMappingManager;
-    public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
 
     void Start()
     {
-        // Make sure we have all the components in the scene we need.
         anchorManager = WorldAnchorManager.Instance;
         if (anchorManager == null)
         {

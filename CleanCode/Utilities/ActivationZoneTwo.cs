@@ -11,12 +11,14 @@ public class ActivationZoneTwo : MonoBehaviour
     public TapToPlaceCookingPot tapToPlaceCookingPot;
     public GameObject campfire;
     public ActivationZoneThree activationZoneThree;
-    public bool collided = false;
-    public bool videoThreeStarted = false;
+    private bool collided;
+    private bool videoThreeStarted;
 
     void Start()
     {
-        videoThreeController.stopVideo();
+        videoThreeStarted = false;
+        collided = false;
+        videoThreeController.pauseVideo();
         videoThreeHider.hide();
     }
 
@@ -25,7 +27,7 @@ public class ActivationZoneTwo : MonoBehaviour
         if (collider.GetComponent<Collider>().name == "CookingPotTriggerZone")
         {
             tapToPlaceCookingPot.nearFireThree = true;
-            videoTwoController.stopVideo();
+            videoTwoController.pauseVideo();
             videoTwoHider.hide();
             videoHiderTwo.proximityPlay = 0.0f;
             collided = true;
@@ -36,9 +38,9 @@ public class ActivationZoneTwo : MonoBehaviour
 
     private void Update()
     {
-        if (this.transform.position != campfire.transform.position)
+        if (transform.position != campfire.transform.position)
         {
-            this.transform.position = campfire.transform.position;
+            transform.position = campfire.transform.position;
         }
 
         if (tapToPlaceCookingPot.onFireThreeAchieved && !videoThreeStarted)

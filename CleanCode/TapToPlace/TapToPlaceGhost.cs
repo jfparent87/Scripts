@@ -5,20 +5,25 @@ public class TapToPlaceGhost : MonoBehaviour
 
     public bool move = false;
     public float speed;
-    public GameObject mainCamera;
     public GameObject ghostZone;
-    public RoomManager roomManager;
+    public float distanceToCameraWhenPlacing = 1.2f;
+    public Vector3 objectScale;
+
+    private RoomManager roomManager;
     private Vector3 targetPosition;
     private Vector3 ghostZonePosition;
     private bool targetPositionAchieved;
     private bool targetPositionAchievedOnce = false;
-    private const float ROTATION_SPEED = 10.0F;
-    private Vector3 newSize;
+    private const float rotationSpeed = 10.0F;
+    private Vector3 ghostObjectScale;
+    private float heightCorrection = 1.5f;
+    private float step;
 
     private void Start()
     {
         resetTargetPosition();
-        newSize = new Vector3(transform.localScale.x * 8.0f, transform.localScale.y * 8.0f, transform.localScale.z * 8.0f);
+        scaleToNormalSize();
+        roomManager = GetComponentInParent<RoomManager>();
     }
 
     void OnSelect()
@@ -54,7 +59,7 @@ public class TapToPlaceGhost : MonoBehaviour
             if (move && targetPositionAchieved)
             {
                 targetPositionAchievedOnce = true;
-                transform.Rotate(Vector3.up, speed * ROTATION_SPEED * Time.deltaTime);
+                transform.Rotate(Vector3.up, speed * rotationSpeed * Time.deltaTime);
             }
 
             if (!move && transform.position != ghostZonePosition)
@@ -80,52 +85,53 @@ public class TapToPlaceGhost : MonoBehaviour
 
     public void resetTargetPosition()
     {
-        targetPosition = mainCamera.transform.position;
+        targetPosition = Camera.main.transform.position;
         ghostZonePosition = ghostZone.transform.position;
+        transform.position = ghostZonePosition;
     }
 
     void moveToUser()
     {
-        targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, (Screen.height / 2) + 1.2f, Camera.main.nearClipPlane + 1.2f));
-        targetPosition.Set(targetPosition.x, targetPosition.y + 0.02f, targetPosition.z);
-        float step = speed * Time.deltaTime;
+        scaleToNormalSize();
+        targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, (Screen.height / 2) + heightCorrection, Camera.main.nearClipPlane + distanceToCameraWhenPlacing));
+        step = speed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
-
-        if (transform.localScale.x <= newSize.x)
-        {
-            transform.localScale = Vector3.MoveTowards(transform.localScale, newSize, step);
-        }
-
+        transform.localScale = Vector3.MoveTowards(transform.localScale, ghostObjectScale, step);
+        
         if (!targetPositionAchievedOnce)
         {
-            Quaternion toQuat = Camera.main.transform.localRotation;
-            toQuat.x = 0;
-            toQuat.z = 0;
-            toQuat *= Quaternion.Euler(0, 180f, 0);
-            this.transform.rotation = toQuat;
+            resetRotation();
         }
     }
 
     void moveToGhostZone()
     {
-        float step = speed * Time.deltaTime;
+        step = speed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, ghostZonePosition, step);
 
-        Vector3 newSize = new Vector3(transform.localScale.x / 8.0f, transform.localScale.y / 8.0f, transform.localScale.z / 8.0f);
-        transform.localScale = Vector3.MoveTowards(transform.localScale, newSize, step);
+        scaleToSmallSize();
+        transform.localScale = Vector3.MoveTowards(transform.localScale, ghostObjectScale, step * 0.8f);
 
-        Quaternion toQuat = GetComponentInParent<Transform>().rotation;
-        this.transform.rotation = toQuat;
+        Quaternion ghostObjectRotation = GetComponentInParent<Transform>().rotation;
+        this.transform.rotation = ghostObjectRotation;
     }
 
-    void SetLocalScale()
+    private void scaleToNormalSize()
     {
+        ghostObjectScale = objectScale;
+    }
 
-        var newSize = new Vector3(transform.localScale.x * 1.5f, transform.localScale.y * 1.5f, transform.localScale.z * 1.5f);
+    private void scaleToSmallSize()
+    {
+        ghostObjectScale = new Vector3(0.0f, 0.0f, 0.0f);
+    }
 
-        while (Vector3.Distance(transform.root.localScale, newSize) > 0)
-        {
-            transform.root.localScale = Vector3.MoveTowards(transform.root.localScale, newSize, Time.deltaTime * 10);
-        }
+    private void resetRotation()
+    {
+        Quaternion ghostObjectRotation = Camera.main.transform.localRotation;
+        ghostObjectRotation.x = 0;
+        ghostObjectRotation.z = 0;
+        ghostObjectRotation *= Quaternion.Euler(0, 180f, 0);
+        this.transform.rotation = ghostObjectRotation;
     }
 }

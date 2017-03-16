@@ -5,20 +5,25 @@ using System.Collections.Generic;
 public class ActivationZoneThree : MonoBehaviour
 {
 
-    public bool videoThreeStarted = false;
     public float proximityTrigger = 2.5f;
-    public float distance;
     public bool checkDistance;
-    public RoomManager roomManager;
+    public GameObject freeVisit;
+    public List<GameObject> objectsToDeactivate;
+
+    private bool videoThreeStarted;
+    private float distance;
+    private bool freeVisitActivated;
+    private RoomManager roomManager;
     private MeshRenderer meshRendered;
     private TextMesh textMesh;
-    public GameObject freeVisit;
-    public bool freeVisitActivated = false;
-    private bool checkDistanceStarted = false;
-    public List<GameObject> objectsToDeactivate;
+    private bool checkDistanceStarted;
 
     void Start()
     {
+        checkDistanceStarted = false;
+        freeVisitActivated = false;
+        videoThreeStarted = false;
+        roomManager = GetComponentInParent<RoomManager>();
         distance = Vector3.Distance(Camera.main.transform.position, this.transform.position);
         checkDistance = false;        
         meshRendered = GetComponent<MeshRenderer>();

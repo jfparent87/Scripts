@@ -2,14 +2,18 @@
 
 public class TapToPlaceIngredient : MonoBehaviour
 {
-    public bool placing = false;
+    public bool placing;
     public float speed;
-    public GameObject mainCamera;
+    public float distanceToCameraWhenPlacing = 1.0f;
+
     private Vector3 targetPosition;
+    private float heightCorrection = 1.5f;
+    private float step;
 
     private void Start()
     {
-        targetPosition = mainCamera.transform.position;
+        placing = false;
+        targetPosition = Camera.main.transform.position;
     }
 
     void OnSelect()
@@ -21,15 +25,15 @@ public class TapToPlaceIngredient : MonoBehaviour
     {
         if (placing)
         {
-            targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, (Screen.height / 2) + 1.2f, Camera.main.nearClipPlane + 1.0f));
-            targetPosition.Set(targetPosition.x, targetPosition.y + 0.02f, targetPosition.z);
-            float step = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
-            Quaternion toQuat = Camera.main.transform.localRotation;
-            toQuat.x = 0;
-            toQuat.z = 0;
-            this.transform.rotation = toQuat;
+            placeIngredientInFrontOfCamera();
         }
+    }
+
+    private void placeIngredientInFrontOfCamera()
+    {
+        targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, (Screen.height / 2) + heightCorrection, Camera.main.nearClipPlane + distanceToCameraWhenPlacing));
+        step = speed * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
     }
 }
 

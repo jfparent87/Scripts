@@ -1,18 +1,17 @@
 ﻿using UnityEngine;
 using HoloToolkit.Unity;
 using HoloToolkit.Unity.SpatialMapping;
-using System.Collections;
 
 public class GhostAnchor : MonoBehaviour
 {
-    bool placing = false;
+    public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
+
+    private bool placing = false;
     protected WorldAnchorManager anchorManager;
     protected SpatialMappingManager spatialMappingManager;
-    public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
 
     void Start()
     {
-        // Make sure we have all the components in the scene we need.
         anchorManager = WorldAnchorManager.Instance;
         if (anchorManager == null)
         {
@@ -28,10 +27,6 @@ public class GhostAnchor : MonoBehaviour
         if (anchorManager != null && spatialMappingManager != null)
         {
             anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
-        }
-        else
-        {
-            Destroy(this);
         }
     }
 }

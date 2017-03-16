@@ -5,11 +5,12 @@ using HoloToolkit.Unity.SpatialMapping;
 public class TapToPlaceCampfire : MonoBehaviour
 {
 
-    bool placing = false;
-    public RoomManager roomManager;
     public TapToPlaceCookingPot tapToPlaceCookingPot;
     public GameObject campfireAnchor;
     public GameObject activationZone;
+
+    private RoomManager roomManager;
+    public bool placing;
     protected WorldAnchorManager anchorManager;
     protected SpatialMappingManager spatialMappingManager;
 
@@ -26,6 +27,9 @@ public class TapToPlaceCampfire : MonoBehaviour
         {
             Debug.LogError("This script expects that you have a SpatialMappingManager component in your scene.");
         }
+
+        roomManager = GetComponentInParent<RoomManager>();
+        placing = false;
     }
 
     void OnSelect()

@@ -7,13 +7,15 @@ public class ActivationZoneOne : MonoBehaviour {
     public VideoHider videoHiderOne;
     public VideoController videoTwoController;
     public Hider videoTwoHider;
-    public TapToPlaceCookingPot tapToPlaceCookingPot;
     public GameObject campfire;
     public bool collided = false;
     public bool videoTwoStarted = false;
 
-	void Start () {
-        videoTwoController.stopVideo();
+    private TapToPlaceCookingPot tapToPlaceCookingPot;
+
+    void Start () {
+        tapToPlaceCookingPot = transform.parent.parent.GetComponentInChildren<TapToPlaceCookingPot>();
+        videoTwoController.pauseVideo();
         videoTwoHider.hide();
     }
 
@@ -22,7 +24,7 @@ public class ActivationZoneOne : MonoBehaviour {
         if (collider.GetComponent<Collider>().name == "CookingPotTriggerZone")
         {
             tapToPlaceCookingPot.nearFireTwo = true;
-            videoOneController.stopVideo();
+            videoOneController.pauseVideo();
             videoOneHider.hide();
             videoHiderOne.proximityPlay = 0.0f;
             collided = true;

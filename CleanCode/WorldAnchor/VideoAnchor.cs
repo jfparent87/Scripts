@@ -4,16 +4,16 @@ using HoloToolkit.Unity.SpatialMapping;
 
 public class VideoAnchor : MonoBehaviour
 {
-    bool placing = false;
-    protected WorldAnchorManager anchorManager;
-    protected SpatialMappingManager spatialMappingManager;
     public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
     public TextMesh hololensDebugLine1;
     public TextMesh hololensDebugLine2;
 
+    private bool placing = false;
+    protected WorldAnchorManager anchorManager;
+    protected SpatialMappingManager spatialMappingManager;
+
     void Start()
     {
-        // Make sure we have all the components in the scene we need.
         anchorManager = WorldAnchorManager.Instance;
         if (anchorManager == null)
         {
@@ -29,10 +29,6 @@ public class VideoAnchor : MonoBehaviour
         if (anchorManager != null && spatialMappingManager != null)
         {
             anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
-        }
-        else
-        {
-            Destroy(this);
         }
     }
 

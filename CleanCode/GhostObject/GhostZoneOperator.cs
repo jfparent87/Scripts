@@ -2,19 +2,32 @@
 
 public class GhostZoneOperator : MonoBehaviour {
 
-    public GhostZone ghostZone;
     public GameObject ghostObject;
-    public RoomManager roomManager;
 
-	void OnSelect () {
+    private GhostZone ghostZone;
+    private RoomManager roomManager;
+
+    private void Start()
+    {
+        resetPosition();
+        roomManager = GetComponentInParent<RoomManager>();
+        ghostZone = transform.parent.GetComponentInChildren<GhostZone>();
+    }
+
+    void OnSelect () {
         ghostZone.selected();
     }
 	
 	void Update () {
-        if (this.transform.position != ghostObject.transform.position && roomManager.editionMode)
+        if (transform.position != ghostObject.transform.position && roomManager.editionMode)
         {
-            this.transform.position = ghostObject.transform.position;
-            this.transform.rotation = ghostObject.transform.rotation;
+            resetPosition();
         }
 	}
+
+    private void resetPosition()
+    {
+        transform.position = ghostObject.transform.position;
+        transform.rotation = ghostObject.transform.rotation;
+    }
 }

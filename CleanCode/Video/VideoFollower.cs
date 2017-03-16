@@ -3,7 +3,14 @@
 public class VideoFollower : MonoBehaviour {
 
     public Hider hider;
-    public bool follow = true;
+    public bool follow;
+
+    private Quaternion videoRotation;
+
+    void Start()
+    {
+        follow = true;
+    }
 
     void OnSelect()
     {
@@ -21,10 +28,15 @@ public class VideoFollower : MonoBehaviour {
     {
         if(hider.showing && follow)
         {
-            Quaternion toQuat = Camera.main.transform.localRotation;
-            toQuat.x = 0;
-            toQuat.z = 0;
-            this.transform.parent.rotation = toQuat;
+            rotateToFaceCamera();
         }
+    }
+
+    private void rotateToFaceCamera()
+    {
+        videoRotation = Camera.main.transform.localRotation;
+        videoRotation.x = 0;
+        videoRotation.z = 0;
+        this.transform.parent.rotation = videoRotation;
     }
 }

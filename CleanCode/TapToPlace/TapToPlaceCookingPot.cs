@@ -5,23 +5,34 @@ public class TapToPlaceCookingPot : MonoBehaviour
 {
 
     public GameObject fireTwo;
+    public GameObject fireTwoFlames;
     public GameObject fireThree;
-    public bool placing = false;
+    public bool placing;
     public List<Ingredients> ingredients;
-    public GameObject mainCamera;
     public float speed;
-    public bool nearFireTwo = false;
-    public bool nearFireThree = false;
-    public bool onFireTwoAchieved = false;
-    public bool onFireThreeAchieved = false;
-    public bool locked = false;
-    public Vector3 targetPosition;
-    public Vector3 fireTwoPosition;
-    public Vector3 fireThreePosition;
+    public bool locked;
+    public bool nearFireTwo;
+    public bool nearFireThree;
+    public bool onFireTwoAchieved;
+    public bool onFireThreeAchieved;
+    public float distanceToCameraWhenPlacing = 1.2f;
+
+    private Vector3 targetPosition;
+    private Vector3 fireTwoPosition;
+    private Vector3 fireThreePosition;
+    private float heightCorrection = 1.5f;
+    private float step;
 
     private void Start()
     {
-        targetPosition = mainCamera.transform.position;
+        locked = false;
+        placing = false;
+        nearFireTwo = false;
+        nearFireThree = false;
+        onFireTwoAchieved = false;
+        onFireThreeAchieved = false;
+        fireTwoPosition = 
+        targetPosition = Camera.main.transform.position;
         resetTargetFireTwo();
         resetTargetFireThree();
     }
@@ -47,11 +58,8 @@ public class TapToPlaceCookingPot : MonoBehaviour
     {
         if (transform.position == fireTwoPosition)
         {
-            onFireTwoAchieved = true;
-            if (ingredients.Count == 0)
-            {
-                locked = false;
-            }
+            arrivedAtFireTwo();
+            fireTwoFlames.SetActive(true);
         }
 
         if (transform.position == fireThreePosition)
@@ -61,42 +69,58 @@ public class TapToPlaceCookingPot : MonoBehaviour
 
         if (placing)
         {
-            targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, (Screen.height / 2) + 1.2f, Camera.main.nearClipPlane + 1.5f));
-            targetPosition.Set(targetPosition.x, targetPosition.y + 0.02f, targetPosition.z);
-            float step = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
-            Quaternion toQuat = Camera.main.transform.localRotation;
-            toQuat.x = 0;
-            toQuat.z = 0;
-            this.transform.rotation = toQuat;
+            placeCookingPotInFrontOfCamera();
         }
 
         if (nearFireTwo && !onFireTwoAchieved)
         {
-            placing = false;
-            float step = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, fireTwoPosition, step);
-            locked = true;
+            placeCookingPotOverFire(fireTwoPosition);
         }
 
         if (nearFireThree && !onFireThreeAchieved)
         {
-            placing = false;
-            float step = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, fireThreePosition, step);
-            locked = true;
+            placeCookingPotOverFire(fireThreePosition);
+        }
+
+        if (ingredients.Count == 0 && fireTwoFlames.activeInHierarchy)
+        {
+            fireTwoFlames.GetComponentInChildren<ParticleSystem>().Stop();
         }
     }
 
     public void resetTargetFireTwo()
     {
         fireTwoPosition = fireTwo.transform.position;
-        fireTwoPosition.Set(fireTwoPosition.x, fireTwoPosition.y + 0.05f, fireTwoPosition.z);
+        fireTwoPosition.Set(fireTwoPosition.x, fireTwoPosition.y + 0.04f, fireTwoPosition.z);
     }
 
     public void resetTargetFireThree()
     {
         fireThreePosition = fireThree.transform.position;
-        fireThreePosition.Set(fireThreePosition.x, fireThreePosition.y + 0.05f, fireThreePosition.z);
+        fireThreePosition.Set(fireThreePosition.x, fireThreePosition.y + 0.04f, fireThreePosition.z);
+    }
+
+    private void arrivedAtFireTwo()
+    {
+        onFireTwoAchieved = true;
+        if (ingredients.Count == 0)
+        {
+            locked = false;
+        }
+    }
+
+    private void placeCookingPotInFrontOfCamera()
+    {
+        targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, (Screen.height / 2) + heightCorrection, Camera.main.nearClipPlane + distanceToCameraWhenPlacing));
+        step = speed * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
+    }
+
+    private void placeCookingPotOverFire(Vector3 firePosition)
+    {
+        placing = false;
+        float step = speed * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, firePosition, step);
+        locked = true;
     }
 }

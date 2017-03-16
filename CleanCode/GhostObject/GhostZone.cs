@@ -5,13 +5,16 @@ using HoloToolkit.Unity.SpatialMapping;
 public class GhostZone : MonoBehaviour {
 
     public GameObject ghostObject;
-    public GameObject hololensCamera;
     public float speed = 0.5f;
-    public RoomManager roomManager;
+    public float distanceToCameraWhenPlacing = 1.2f;
+
+    private RoomManager roomManager;
     private Vector3 targetPosition;
     private bool placing = false;
     protected WorldAnchorManager anchorManager;
     protected SpatialMappingManager spatialMappingManager;
+    private float heightCorrection = 1.5f;
+    private float step;
 
     void Start()
     {
@@ -27,7 +30,9 @@ public class GhostZone : MonoBehaviour {
             Debug.LogError("This script expects that you have a SpatialMappingManager component in your scene.");
         }
 
-        targetPosition = hololensCamera.transform.position;
+        targetPosition = Camera.main.transform.position;
+        roomManager = GetComponentInParent<RoomManager>();
+
         if (!roomManager.editionMode)
         {
             this.GetComponentInChildren<Hider>().hide();
@@ -57,6 +62,7 @@ public class GhostZone : MonoBehaviour {
             {
                 freeAnchor();
             }
+
             if (!placing)
             {
                 lockAnchor();
@@ -69,23 +75,12 @@ public class GhostZone : MonoBehaviour {
     {
         if (placing && roomManager.editionMode)
         {
-            var headPosition = Camera.main.transform.position;
-            var gazeDirection = Camera.main.transform.forward;
+            placeGhostZone();
+        }
 
-            RaycastHit hitInfo;
-            if (Physics.Raycast(headPosition, gazeDirection, out hitInfo,
-                30.0f, SpatialMapping.PhysicsRaycastMask))
-            {
-                targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, (Screen.height / 2) + 1.2f, Camera.main.nearClipPlane + 1.0f));
-                targetPosition.Set(targetPosition.x, targetPosition.y + 0.02f, targetPosition.z);
-                float step = speed * Time.deltaTime;
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
-
-                Quaternion toQuat = Camera.main.transform.localRotation;
-                toQuat.x = 0;
-                toQuat.z = 0;
-                this.transform.rotation = toQuat;
-            }
+        if (roomManager.editionMode && ghostObject.GetComponent<Hider>().previousSize.x == 0.1f)
+        {
+            ghostObject.GetComponent<Hider>().previousSize = ghostObject.GetComponent<TapToPlaceGhost>().objectScale;
         }
     }
 
@@ -97,5 +92,30 @@ public class GhostZone : MonoBehaviour {
     public void lockAnchor()
     {
         anchorManager.AttachAnchor(this.transform.gameObject, this.GetComponent<GhostAnchor>().SavedAnchorFriendlyName);
+    }
+
+    private void resetRotation()
+    {
+        Quaternion ghostZoneRotation = Camera.main.transform.localRotation;
+        ghostZoneRotation.x = 0;
+        ghostZoneRotation.z = 0;
+        ghostZoneRotation *= Quaternion.Euler(0, 180f, 0);
+        this.transform.rotation = ghostZoneRotation;
+    }
+
+    private void placeGhostZone()
+    {
+        var headPosition = Camera.main.transform.position;
+        var gazeDirection = Camera.main.transform.forward;
+
+        RaycastHit hitInfo;
+        if (Physics.Raycast(headPosition, gazeDirection, out hitInfo,
+            30.0f, SpatialMapping.PhysicsRaycastMask))
+        {
+            targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, (Screen.height / 2) + heightCorrection, Camera.main.nearClipPlane + distanceToCameraWhenPlacing));
+            step = speed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
+            resetRotation();
+        }
     }
 }

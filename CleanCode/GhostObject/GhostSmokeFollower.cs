@@ -2,9 +2,10 @@
 
 public class GhostSmokeFollower : MonoBehaviour {
 
-    public GameObject ghostZone;
+    private GhostZone ghostZone;
 
     void Start () {
+        ghostZone = transform.parent.GetComponentInChildren<GhostZone>();
         this.transform.position = ghostZone.transform.position;
 	}
 	

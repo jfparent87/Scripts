@@ -11,12 +11,15 @@ public class VideoHider : MonoBehaviour
     public float distance;
     public bool checkDistance;
 
+    private RoomManager roomManager;
+
     void Start()
     {
-        distance = Vector3.Distance(Camera.main.transform.position, this.transform.position);
+        roomManager = GetComponentInParent<RoomManager>();
+        video.GetComponent<Hider>().previousSize = new Vector3(0.08f, 0.2f, 0.06f);
+        distance = Vector3.Distance(Camera.main.transform.position, transform.position);
         checkDistance = true;
-        video.GetComponent<VideoController>().stopVideo();
-        video.GetComponent<Hider>().hide();
+        video.GetComponent<VideoController>().pauseVideo();
         StartCoroutine(distanceCheck());
     }
 
@@ -32,11 +35,18 @@ public class VideoHider : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (roomManager.editionMode && !video.GetComponent<Hider>().showing)
+        {
+            video.GetComponent<Hider>().show();
+        }
+    }
+
     public void instanciate()
     {
         if (!isCreated)
         {
-            video.GetComponent<Hider>().previousSize = new Vector3(0.08f, 0.2f, 0.06f);
             video.GetComponent<Hider>().show();
             video.GetComponent<VideoController>().playVideo();
             isCreated = true;
@@ -47,7 +57,7 @@ public class VideoHider : MonoBehaviour
     {
         if (isCreated)
         {
-            video.GetComponent<VideoController>().stopVideo();
+            video.GetComponent<VideoController>().pauseVideo();
             video.GetComponent<Hider>().hide();
             isCreated = false;
         }
@@ -55,7 +65,7 @@ public class VideoHider : MonoBehaviour
 
     void verifyDistance()
     {
-        distance = Vector3.Distance(Camera.main.transform.position, this.transform.position);
+        distance = Vector3.Distance(Camera.main.transform.position, transform.position);
         if (distance < proximityPlay && !isCreated)
         {
             instanciate();

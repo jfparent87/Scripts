@@ -140,8 +140,6 @@ namespace HoloToolkit.Unity.InputModule
         {
             originalColor = new Color32(255, 255, 255, 255);
             highlightColor = new Color32(255, 125, 125, 255);
-            originalColorMonitor = new Color32(0, 0, 0, 0);
-            highlightColorMonitor = new Color32(0, 92, 116, 0);
         }
 
         private void Update()
@@ -355,6 +353,14 @@ namespace HoloToolkit.Unity.InputModule
             if (gameObject != monitorZone002 && gameObject != monitorZone001)
             {
                 gameObject.GetComponent<Renderer>().material.color = highlightColor;
+                if (gameObject != meat)
+                {
+                    hightlightOff(meat);
+                }
+                if (gameObject != mushroom)
+                {
+                    hightlightOff(mushroom);
+                }
             }
         }
 
@@ -372,7 +378,7 @@ namespace HoloToolkit.Unity.InputModule
                 emission.enabled = false;
             }
 
-            if (gameObject != monitorZone002 && gameObject != monitorZone001)
+            if (gameObject != monitorZone002 && gameObject != monitorZone001 && gameObject)
             {
                 gameObject.GetComponent<Renderer>().material.color = originalColor;
             }

@@ -6,6 +6,7 @@ public class Ingredients : MonoBehaviour {
     public GameObject cookingPot;
     public GameObject whiteSmoke;
     public float speed = 0.2f;
+
     private bool nearCookingPot = false;
     private bool overCookingPotAchieved = false;
     private bool insideCookingPotAchieved = false;
@@ -25,7 +26,7 @@ public class Ingredients : MonoBehaviour {
     {
         target = cookingPot.transform;
         overCookingPot = target.position;
-        overCookingPot.Set(overCookingPot.x, overCookingPot.y + 0.3f, overCookingPot.z);
+        overCookingPot.Set(overCookingPot.x, overCookingPot.y + 0.25f, overCookingPot.z);
         insideCookingPot = target.position;
     }
 

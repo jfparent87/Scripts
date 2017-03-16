@@ -8,28 +8,44 @@ public class SpeechManager2 : MonoBehaviour
 {
     KeywordRecognizer keywordRecognizer = null;
     Dictionary<string, System.Action> keywords = new Dictionary<string, System.Action>();
-    public RoomManager roomManager;
     public List<VideoController> videoControllers;
+    public List<TapToPlaceGhost> ghostZones;
+
+    private RoomManager roomManager;
 
     void Start()
     {
+        roomManager = GetComponent<RoomManager>();
+
         keywords.Add("Reset world", () =>
         {
+            SceneManager.LoadScene("Scene002");
             foreach (var videoController in videoControllers)
             {
                 videoController.restartVideo();
             }
-            SceneManager.LoadScene("Scene002");
+            foreach (var ghostZone in ghostZones)
+            {
+                ghostZone.resetTargetPosition();
+            }
         });
 
         keywords.Add("Enter edition mode", () =>
         {
             roomManager.editionMode = true;
+            foreach (var videoController in videoControllers)
+            {
+                videoController.restartVideo();
+            }
         });
 
         keywords.Add("Enter play mode", () =>
         {
             roomManager.editionMode = false;
+            foreach (var videoController in videoControllers)
+            {
+                videoController.restartVideo();
+            }
         });
 
         // Tell the KeywordRecognizer about our keywords.
