@@ -6,7 +6,7 @@ public class VideoController : MonoBehaviour {
     public RoomManager roomManager;
     public MovieTexture movie;
 
-    private AudioSource audioSource;
+    public AudioSource audioSource;
     private VideoAnchor videoAnchor;
     int vsyncprevious;
 
@@ -46,6 +46,8 @@ public class VideoController : MonoBehaviour {
     {
         movie.Stop();
         audioSource.Stop();
+        audioSource.Play();
+        audioSource.Pause();
     }
 
     public void playVideo()

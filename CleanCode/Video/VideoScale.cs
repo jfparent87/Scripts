@@ -12,6 +12,7 @@ public class VideoScale : MonoBehaviour {
         GetComponentInParent<VideoAnchor>().freeAnchor();
         screen = videoScreen.transform.localScale;
         videoScreen.transform.localScale = new Vector3(screen.x * scaleFactor, screen.y * scaleFactor, screen.z * scaleFactor);
+        videoScreen.GetComponent<Hider>().previousSize = videoScreen.transform.localScale;
         GetComponentInParent<VideoAnchor>().lockAnchor();
     }
 }

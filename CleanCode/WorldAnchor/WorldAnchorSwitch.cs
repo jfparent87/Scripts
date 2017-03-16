@@ -15,7 +15,14 @@ public class WorldAnchorSwitch : MonoBehaviour
         {
             foreach (var videoHider in videoHiders)
             {
-                videoHider.proximityStop = 10.0f;
+                if (videoHider.gameObject.name != "Wendake1")
+                {
+                    videoHider.proximityStop = 10.0f;
+                }
+                else
+                {
+                    videoHider.proximityStop = 2.75f;
+                }
             }
             foreach (var hider in hiders)
             {
