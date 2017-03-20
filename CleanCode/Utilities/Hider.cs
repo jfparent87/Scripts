@@ -7,7 +7,7 @@ public class Hider : MonoBehaviour {
 
     void Start()
     {
-        previousSize = gameObject.transform.localScale;
+        resetPreviousSize();
     }
 
     public void hide() {
@@ -19,5 +19,10 @@ public class Hider : MonoBehaviour {
     {
         gameObject.transform.localScale = previousSize;
         showing = true;
+    }
+
+    public void resetPreviousSize()
+    {
+        previousSize = gameObject.transform.localScale;
     }
 }

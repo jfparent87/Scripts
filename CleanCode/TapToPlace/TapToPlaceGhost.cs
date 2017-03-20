@@ -123,6 +123,7 @@ public class TapToPlaceGhost : MonoBehaviour
 
     private void scaleToSmallSize()
     {
+        Debug.Log("scaleToSmallSize on " + gameObject.name);
         ghostObjectScale = new Vector3(0.0f, 0.0f, 0.0f);
     }
 

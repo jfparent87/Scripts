@@ -40,6 +40,10 @@ public class VideoController : MonoBehaviour {
         {
             QualitySettings.vSyncCount = vsyncprevious;
         }
+        if (!audioSource)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
     }
 
     public void restartVideo()
@@ -65,8 +69,21 @@ public class VideoController : MonoBehaviour {
         if (!roomManager.editionMode)
         {
             movie.Pause();
-            audioSource.Pause();
-            videoAnchor.lockAnchor();
+            try
+            {
+                audioSource.Pause();
+            }
+            catch
+            {
+                audioSource = GetComponent<AudioSource>();
+            }
+            try
+            {
+                videoAnchor.lockAnchor();
+            }
+            catch
+            {
+            }
         }
     }
 }

@@ -16,7 +16,10 @@ public class VideoHider : MonoBehaviour
     void Start()
     {
         roomManager = GetComponentInParent<RoomManager>();
-        video.GetComponent<Hider>().previousSize = new Vector3(0.08f, 0.2f, 0.06f);
+        if (video.GetComponent<Hider>().previousSize.x == 0.0f)
+        {
+            video.GetComponent<Hider>().previousSize = new Vector3(0.08f, 0.2f, 0.06f);
+        }
         distance = Vector3.Distance(Camera.main.transform.position, transform.position);
         checkDistance = true;
         video.GetComponent<VideoController>().pauseVideo();
@@ -78,6 +81,7 @@ public class VideoHider : MonoBehaviour
 
     IEnumerator distanceCheck()
     {
+        Debug.Log("distance check for " + gameObject.name);
         while (checkDistance)
         {
             yield return new WaitForSeconds(2.0f);

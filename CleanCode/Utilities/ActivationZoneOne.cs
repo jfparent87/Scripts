@@ -28,7 +28,6 @@ public class ActivationZoneOne : MonoBehaviour {
             videoOneHider.hide();
             videoHiderOne.proximityPlay = 0.0f;
             collided = true;
-            videoTwoHider.previousSize = new Vector3(0.08f, 0.2f, 0.06f);
         }
     }
 

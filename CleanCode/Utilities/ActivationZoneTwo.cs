@@ -11,8 +11,8 @@ public class ActivationZoneTwo : MonoBehaviour
     public TapToPlaceCookingPot tapToPlaceCookingPot;
     public GameObject campfire;
     public ActivationZoneThree activationZoneThree;
-    private bool collided;
-    private bool videoThreeStarted;
+    public bool collided;
+    public bool videoThreeStarted;
 
     void Start()
     {
@@ -31,7 +31,6 @@ public class ActivationZoneTwo : MonoBehaviour
             videoTwoHider.hide();
             videoHiderTwo.proximityPlay = 0.0f;
             collided = true;
-            videoThreeHider.previousSize = new Vector3(0.08f, 0.2f, 0.06f);
             activationZoneThree.checkDistance = true;
         }
     }

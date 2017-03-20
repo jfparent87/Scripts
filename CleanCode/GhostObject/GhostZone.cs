@@ -78,7 +78,7 @@ public class GhostZone : MonoBehaviour {
             placeGhostZone();
         }
 
-        if (roomManager.editionMode && ghostObject.GetComponent<Hider>().previousSize.x == 0.1f)
+        if (roomManager.editionMode && ghostObject.GetComponent<Hider>().previousSize.x <= 0.1f)
         {
             ghostObject.GetComponent<Hider>().previousSize = ghostObject.GetComponent<TapToPlaceGhost>().objectScale;
         }

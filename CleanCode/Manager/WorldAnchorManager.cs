@@ -93,7 +93,6 @@ namespace HoloToolkit.Unity
                 Debug.LogError("Must supply an AnchorName.");
                 return;
             }
-            hololensDebugLine2.text = "anchorManager.AttachAnchor(" + gameObjectToAnchor.name + ", " + anchorName + ");";
             anchorOperations.Enqueue(
                 new AnchorAttachmentInfo()
                 {
@@ -115,7 +114,7 @@ namespace HoloToolkit.Unity
             {
                 Debug.LogError("remove anchor called before anchor store is ready.");
             }
-            hololensDebugLine2.text = "anchorManager.AttachAnchor(" + gameObjectToUnanchor.name;
+
             WorldAnchor anchor = gameObjectToUnanchor.GetComponent<WorldAnchor>();
 
             if (anchor != null)
