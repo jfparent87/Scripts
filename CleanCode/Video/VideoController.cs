@@ -1,14 +1,21 @@
 ﻿using UnityEngine;
+using System.Diagnostics;
 
 [RequireComponent (typeof(AudioSource))]
 
 public class VideoController : MonoBehaviour {
     public RoomManager roomManager;
     public MovieTexture movie;
-
     public AudioSource audioSource;
+    public int activateAfterSeconds;
+
+    private System.TimeSpan activationTime;
     private VideoAnchor videoAnchor;
-    int vsyncprevious;
+    private int vsyncprevious;
+    private Stopwatch timer;
+    private Stopwatch totalTime;
+    private bool timerStarted = false;
+    private bool activated = false;
 
     void Start () {
         videoAnchor = GetComponentInParent<VideoAnchor>();
@@ -20,17 +27,26 @@ public class VideoController : MonoBehaviour {
         audioSource.spatialBlend = 1.0f;
         audioSource.dopplerLevel = 0.0f;
         audioSource.rolloffMode = AudioRolloffMode.Custom;
+        activationTime = new System.TimeSpan(0, 0, activateAfterSeconds);
+        UnityEngine.Debug.Log(activationTime);
+        timer = new Stopwatch();
     }
 
     void OnSelect()
     {
         if (!movie.isPlaying)
         {
-            playVideo();
+            if (!roomManager.editionMode)
+            {
+                playVideo();
+            }
         }
         else
         {
-            pauseVideo();
+            if (!roomManager.editionMode)
+            {
+                pauseVideo();
+            }
         }
     }
 
@@ -40,15 +56,26 @@ public class VideoController : MonoBehaviour {
         {
             QualitySettings.vSyncCount = vsyncprevious;
         }
+
         if (!audioSource)
         {
             audioSource = GetComponent<AudioSource>();
         }
+
+        if (!activated && timer.Elapsed >= activationTime)
+        {
+            //TODO : event to activate 
+            UnityEngine.Debug.Log( gameObject.name + " activated.");
+            activated = true;
+        }
     }
 
-    public void restartVideo()
+    public void resetVideo()
     {
         movie.Stop();
+        timer = new Stopwatch();
+        activated = false;
+        timerStarted = false;
         audioSource.Stop();
         audioSource.Play();
         audioSource.Pause();
@@ -56,34 +83,55 @@ public class VideoController : MonoBehaviour {
 
     public void playVideo()
     {
-        if (!roomManager.editionMode)
+        videoAnchor.freeAnchor();
+        movie.Play();
+        if (!timerStarted)
         {
-            videoAnchor.freeAnchor();
-            movie.Play();
-            audioSource.UnPause();
+            startTimer();
         }
+        else
+        {
+            unPauseTimer();
+        }
+        
+        audioSource.UnPause();
     }
 
     public void pauseVideo()
     {
-        if (!roomManager.editionMode)
+        stopTimer();
+        movie.Pause();
+        try
         {
-            movie.Pause();
-            try
-            {
-                audioSource.Pause();
-            }
-            catch
-            {
-                audioSource = GetComponent<AudioSource>();
-            }
-            try
-            {
-                videoAnchor.lockAnchor();
-            }
-            catch
-            {
-            }
+            audioSource.Pause();
+        }
+        catch
+        {
+            audioSource = GetComponent<AudioSource>();
+            audioSource.Pause();
+        }
+    }
+
+    public void startTimer()
+    {
+        timer = Stopwatch.StartNew();
+        timerStarted = true;
+    }
+
+    public void unPauseTimer()
+    {
+        timer.Start();
+        var elapsed = timer.Elapsed;
+        UnityEngine.Debug.Log(gameObject.name + " unpause time elapsed = " + elapsed.ToString());
+    }
+
+    public void stopTimer()
+    {
+        if (movie.isPlaying)
+        {
+            timer.Stop();
+            var elapsed = timer.Elapsed;
+            UnityEngine.Debug.Log(gameObject.name + " time elapsed = " + elapsed.ToString());
         }
     }
 }

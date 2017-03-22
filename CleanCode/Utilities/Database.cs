@@ -7,22 +7,21 @@ public class Database : MonoBehaviour
 {
 
     public static Database Instance;
-    public Vector3 firstVideoSize;
-    public Vector3 secondVideoSize;
-    public Vector3 thirdVideoSize;
-    public Vector3 defaultSize = new Vector3(0.08f, 0.02f, 0.06f);
-    public TextMesh txtTextMesh;
+
+    private Vector3 firstVideoSize;
+    private Vector3 secondVideoSize;
+    private Vector3 thirdVideoSize;
+    private Vector3 defaultSize = new Vector3(0.08f, 0.02f, 0.06f);
     public GameObject firstVideoData;
     public GameObject secondVideoData;
     public GameObject thirdVideoData;
-    public GameObject video1;
-    public GameObject video2;
-    public GameObject video3;
-
+    private GameObject video1;
+    private GameObject video2;
+    private GameObject video3;
     private Hider firstVideoHider;
     private Hider secondVideoHider;
     private Hider thirdVideoHider;
-    public GameObject[] datas;
+    private GameObject[] datas;
 
     protected WorldAnchorManager anchorManager;
     protected SpatialMappingManager spatialMappingManager;
@@ -113,10 +112,6 @@ public class Database : MonoBehaviour
         firstVideoHider.previousSize = firstVideoSize;
         secondVideoHider.previousSize = secondVideoSize;
         thirdVideoHider.previousSize = thirdVideoSize;
-        Debug.Log("applying previous sizes");
-        Debug.Log("previous size 1 : " + firstVideoSize.ToString("F4"));
-        Debug.Log("previous size 2 : " + secondVideoSize.ToString("F4"));
-        Debug.Log("previous size 3 : " + thirdVideoSize.ToString("F4"));
     }
 
     public void fetchVideoHiders()
@@ -135,9 +130,32 @@ public class Database : MonoBehaviour
 
     public void loadSizes()
     {
-        firstVideoSize = StringToVector3(firstVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName.Remove(0, 4));
-        secondVideoSize = StringToVector3(secondVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName.Remove(0, 4));
-        thirdVideoSize = StringToVector3(thirdVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName.Remove(0, 4));
+        if (firstVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName != "FirstVideoData")
+        {
+            firstVideoSize = stringToVector3(firstVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName.Remove(0, 4));
+        }
+        else
+        {
+            firstVideoSize = defaultSize;
+        }
+
+        if (secondVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName != "SecondVideoData")
+        {
+            secondVideoSize = stringToVector3(secondVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName.Remove(0, 4));
+        }
+        else
+        {
+            secondVideoSize = defaultSize;
+        }
+
+        if (thirdVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName != "ThirdVideoData")
+        {
+            thirdVideoSize = stringToVector3(thirdVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName.Remove(0, 4));
+        }
+        else
+        {
+            thirdVideoSize = defaultSize;
+        }
 
         video1.transform.localScale = firstVideoSize;
         video2.transform.localScale = secondVideoSize;
@@ -161,18 +179,15 @@ public class Database : MonoBehaviour
         thirdVideoHider.hide();
     }
 
-    public static Vector3 StringToVector3(string sVector)
+    public Vector3 stringToVector3(string vector3)
     {
-        // Remove the parentheses
-        if (sVector.StartsWith("(") && sVector.EndsWith(")"))
+        if (vector3.StartsWith("(") && vector3.EndsWith(")"))
         {
-            sVector = sVector.Substring(1, sVector.Length - 2);
+            vector3 = vector3.Substring(1, vector3.Length - 2);
         }
 
-        // split the items
-        string[] sArray = sVector.Split(',');
+        string[] sArray = vector3.Split(',');
 
-        // store as a Vector3
         Vector3 result = new Vector3(
             float.Parse(sArray[0]),
             float.Parse(sArray[1]),

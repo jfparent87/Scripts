@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class TapToPlaceIngredient : MonoBehaviour
 {
     public bool placing;
     public float speed;
     public float distanceToCameraWhenPlacing = 1.0f;
+    public RoomManager roomManager;
+    public CookingPotAnchor ingredientAnchor;
 
     private Vector3 targetPosition;
     private float heightCorrection = 1.5f;
@@ -14,11 +17,23 @@ public class TapToPlaceIngredient : MonoBehaviour
     {
         placing = false;
         targetPosition = Camera.main.transform.position;
+        StartCoroutine(resetPosition());
     }
 
     void OnSelect()
     {
         placing = !placing;
+
+        if (placing && roomManager.editionMode)
+        {
+            ingredientAnchor.freeAnchor();
+        }
+
+        if (!placing && roomManager.editionMode)
+        {
+            ingredientAnchor.gameObject.transform.position = gameObject.transform.position;
+            ingredientAnchor.lockAnchor();
+        }
     }
 
     void Update()
@@ -27,6 +42,12 @@ public class TapToPlaceIngredient : MonoBehaviour
         {
             placeIngredientInFrontOfCamera();
         }
+    }
+
+    IEnumerator resetPosition()
+    {
+        yield return new WaitForSeconds(1.0f);
+        gameObject.transform.position = ingredientAnchor.gameObject.transform.position;
     }
 
     private void placeIngredientInFrontOfCamera()

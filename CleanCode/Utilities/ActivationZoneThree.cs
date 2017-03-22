@@ -64,7 +64,11 @@ public class ActivationZoneThree : MonoBehaviour
             freeVisit.SetActive(true);
             foreach (var objectToDeactivate in objectsToDeactivate)
             {
-                objectToDeactivate.SetActive(false);
+                if (objectToDeactivate.GetComponentInChildren<VideoController>())
+                {
+                    objectToDeactivate.GetComponentInChildren<VideoController>().resetVideo();
+                }
+                objectToDeactivate.GetComponent<Hider>().hide();
             }
             
         }

@@ -10,7 +10,6 @@ public class Debugger : MonoBehaviour {
     private Hider hider;
     protected WorldAnchorManager anchorManager;
     protected SpatialMappingManager spatialMappingManager;
-    public GameObject anchorToRemove;
 
     void Start () {
         hider = GetComponent<Hider>();

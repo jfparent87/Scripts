@@ -14,9 +14,6 @@ namespace HoloToolkit.Unity.InputModule
     {
         public delegate void FocusedChangedDelegate(GameObject previousObject, GameObject newObject);
 
-        public TextMesh hololensDebugLine3;
-        public TextMesh hololensDebugLine4;
-
         /// <summary>
         /// Indicates whether the user is currently gazing at an object.
         /// </summary>
@@ -145,10 +142,7 @@ namespace HoloToolkit.Unity.InputModule
         private void Update()
         {
             hitObject = HitObject;
-            if (hitObject != null)
-            {
-                hololensDebugLine3.text = "Hit Object = " + hitObject.name;
-            }
+
             if (hitObject)
             {
                 hitObjectName = hitObject.name;

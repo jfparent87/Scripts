@@ -70,12 +70,12 @@ public class TapToPlaceClip : MonoBehaviour
 
     public void freeAnchor()
     {
-        anchorManager.RemoveAnchor(this.transform.parent.gameObject);
+        anchorManager.RemoveAnchor(transform.parent.gameObject);
     }
 
     public void lockAnchor()
     {
-        anchorManager.AttachAnchor(this.transform.parent.gameObject, this.GetComponentInParent<VideoAnchor>().SavedAnchorFriendlyName);
+        anchorManager.AttachAnchor(transform.parent.gameObject, GetComponentInParent<VideoAnchor>().SavedAnchorFriendlyName);
     }
 
     private void placeClipInFrontOfCamera()

@@ -69,11 +69,11 @@ public class VideoHider : MonoBehaviour
     void verifyDistance()
     {
         distance = Vector3.Distance(Camera.main.transform.position, transform.position);
-        if (distance < proximityPlay && !isCreated)
+        if (distance < proximityPlay && !isCreated && !roomManager.editionMode)
         {
             instanciate();
         }
-        if (distance > proximityStop && isCreated)
+        if (distance > proximityStop && isCreated && !roomManager.editionMode)
         {
             destroy();
         }
@@ -81,7 +81,6 @@ public class VideoHider : MonoBehaviour
 
     IEnumerator distanceCheck()
     {
-        Debug.Log("distance check for " + gameObject.name);
         while (checkDistance)
         {
             yield return new WaitForSeconds(2.0f);

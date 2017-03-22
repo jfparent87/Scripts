@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public class TapToPlaceCookingPot : MonoBehaviour
 {
@@ -16,7 +17,10 @@ public class TapToPlaceCookingPot : MonoBehaviour
     public bool onFireTwoAchieved;
     public bool onFireThreeAchieved;
     public float distanceToCameraWhenPlacing = 1.2f;
+    public RoomManager roomManager;
+    public CookingPotAnchor cookingPotAnchor;
 
+    private GameObject fireOne;
     private Vector3 targetPosition;
     private Vector3 fireTwoPosition;
     private Vector3 fireThreePosition;
@@ -25,6 +29,7 @@ public class TapToPlaceCookingPot : MonoBehaviour
 
     private void Start()
     {
+        fireOne = GameObject.Find("CampfireOne");
         locked = false;
         placing = false;
         nearFireTwo = false;
@@ -35,6 +40,7 @@ public class TapToPlaceCookingPot : MonoBehaviour
         targetPosition = Camera.main.transform.position;
         resetTargetFireTwo();
         resetTargetFireThree();
+        StartCoroutine(resetPosition());
     }
 
     void OnSelect()
@@ -44,11 +50,21 @@ public class TapToPlaceCookingPot : MonoBehaviour
         if (!locked)
         {
             placing = !placing;
+            if (placing && roomManager.editionMode)
+            {
+                cookingPotAnchor.freeAnchor();
+            }
+
             if (!placing)
             {
                 for (int ingredient = 0; ingredient < ingredients.Count; ingredient++)
                 {
                     ingredients[ingredient].resetTarget();
+                }
+                if (roomManager.editionMode)
+                {
+                    cookingPotAnchor.gameObject.transform.position = gameObject.transform.position;
+                    cookingPotAnchor.lockAnchor();
                 }
             }
         }
@@ -109,6 +125,12 @@ public class TapToPlaceCookingPot : MonoBehaviour
         }
     }
 
+    IEnumerator resetPosition()
+    {
+        yield return new WaitForSeconds(1.0f);
+        gameObject.transform.position = cookingPotAnchor.gameObject.transform.position;
+    }
+
     private void placeCookingPotInFrontOfCamera()
     {
         targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, (Screen.height / 2) + heightCorrection, Camera.main.nearClipPlane + distanceToCameraWhenPlacing));
@@ -123,4 +145,5 @@ public class TapToPlaceCookingPot : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, firePosition, step);
         locked = true;
     }
+
 }

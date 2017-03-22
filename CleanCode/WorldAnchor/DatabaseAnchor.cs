@@ -3,10 +3,11 @@ using HoloToolkit.Unity;
 using HoloToolkit.Unity.SpatialMapping;
 public class DatabaseAnchor : MonoBehaviour {
 
-    protected WorldAnchorManager anchorManager;
-    protected SpatialMappingManager spatialMappingManager;
     public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
     public char videoNumber;
+
+    protected WorldAnchorManager anchorManager;
+    protected SpatialMappingManager spatialMappingManager;
 
     void Start()
     {
@@ -44,7 +45,6 @@ public class DatabaseAnchor : MonoBehaviour {
                 {
                     if (id[0] == 'D' && id[1] == 'B' && id[2] == 'V' && id[3] == videoNumber)
                     {
-                        Debug.Log(id);
                         SavedAnchorFriendlyName = id;
                     }
                 }

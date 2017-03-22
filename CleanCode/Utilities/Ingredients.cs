@@ -28,6 +28,7 @@ public class Ingredients : MonoBehaviour {
         overCookingPot = target.position;
         overCookingPot.Set(overCookingPot.x, overCookingPot.y + 0.25f, overCookingPot.z);
         insideCookingPot = target.position;
+        insideCookingPot.Set(insideCookingPot.x, insideCookingPot.y + 0.1f, insideCookingPot.z);
     }
 
     void OnTriggerEnter(Collider collider)
@@ -74,15 +75,15 @@ public class Ingredients : MonoBehaviour {
         if (nearCookingPot && insideCookingPotAchieved)
         {
             nearCookingPot = false;
-            StartCoroutine(waitAndDestroy());
+            StartCoroutine(waitAndHide());
         }
     }
 
-    IEnumerator waitAndDestroy()
+    IEnumerator waitAndHide()
     {
         yield return new WaitForSeconds(0.5f);
         cookingPot.GetComponent<TapToPlaceCookingPot>().ingredients.Remove(this);
         whiteSmoke.GetComponent<ParticleSystem>().Stop();
-        Destroy(this.gameObject);
+        GetComponent<Hider>().hide();
     }
 }

@@ -2,11 +2,10 @@
 using HoloToolkit.Unity;
 using HoloToolkit.Unity.SpatialMapping;
 
-public class VideoAnchor : MonoBehaviour
+public class CookingPotAnchor : MonoBehaviour
 {
-    public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
+    public string savedAnchorFriendlyName = "SavedAnchorFriendlyName";
 
-    private bool placing = false;
     protected WorldAnchorManager anchorManager;
     protected SpatialMappingManager spatialMappingManager;
 
@@ -26,17 +25,17 @@ public class VideoAnchor : MonoBehaviour
 
         if (anchorManager != null && spatialMappingManager != null)
         {
-            anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
+            anchorManager.AttachAnchor(gameObject, savedAnchorFriendlyName);
         }
     }
 
     public void freeAnchor()
     {
-        anchorManager.RemoveAnchor(gameObject);
+        anchorManager.RemoveAnchor(transform.gameObject);
     }
 
     public void lockAnchor()
     {
-        anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
+        anchorManager.AttachAnchor(transform.gameObject, savedAnchorFriendlyName);
     }
 }
