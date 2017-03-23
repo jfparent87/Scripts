@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class ResetManager : MonoBehaviour {
 
@@ -14,12 +15,13 @@ public class ResetManager : MonoBehaviour {
     public ActivationZoneThree activationZoneThree;
     public VideoHider videoHiderOne;
     public GameObject freeVisit;
+    public Database database;
 
     public void OnSelect()
     {
         Debug.Log("Reset Scene");
         SceneManager.LoadScene("Scene002");
-
+        resetDatabse();
         foreach (var ghostZone in ghostZones)
         {
             ghostZone.resetTargetPosition();
@@ -83,6 +85,13 @@ public class ResetManager : MonoBehaviour {
     private void resetActivationZoneThree()
     {
         activationZoneThree.checkDistance = false;
+    }
+
+    IEnumerator resetDatabse()
+    {
+        yield return new WaitForSeconds(1.0f);
+        database.resetAnchorConnection();
+        database.findDatas();
     }
 
 }

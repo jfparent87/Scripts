@@ -8,17 +8,17 @@ public class VideoController : MonoBehaviour {
     public MovieTexture movie;
     public AudioSource audioSource;
     public int activateAfterSeconds;
+    public bool activated = false;
+    public TapToPlaceCookingPot cookingPot;
+    public VideoAnchor videoAnchor;
 
     private System.TimeSpan activationTime;
-    private VideoAnchor videoAnchor;
     private int vsyncprevious;
     private Stopwatch timer;
     private Stopwatch totalTime;
     private bool timerStarted = false;
-    private bool activated = false;
 
     void Start () {
-        videoAnchor = GetComponentInParent<VideoAnchor>();
         vsyncprevious = QualitySettings.vSyncCount;
         QualitySettings.vSyncCount = 0;
         movie = GetComponent<Renderer>().material.mainTexture as MovieTexture;
@@ -66,7 +66,13 @@ public class VideoController : MonoBehaviour {
         {
             //TODO : event to activate 
             UnityEngine.Debug.Log( gameObject.name + " activated.");
+            pauseVideo();
             activated = true;
+            if (gameObject.name == "wendake1")
+            {
+                cookingPot.locked = false;
+            }
+            gameObject.GetComponentInParent<Hider>().hide();
         }
     }
 
@@ -83,7 +89,6 @@ public class VideoController : MonoBehaviour {
 
     public void playVideo()
     {
-        videoAnchor.freeAnchor();
         movie.Play();
         if (!timerStarted)
         {

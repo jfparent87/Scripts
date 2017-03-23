@@ -51,4 +51,20 @@ public class DatabaseAnchor : MonoBehaviour {
             }
         }
     }
+
+    public void saveAnchor()
+    {
+        freeAnchor();
+        lockAnchor();
+    }
+
+    private void freeAnchor()
+    {
+        anchorManager.RemoveAnchor(gameObject);
+    }
+
+    private void lockAnchor()
+    {
+        anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
+    }
 }

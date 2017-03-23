@@ -8,9 +8,9 @@ public class Database : MonoBehaviour
 
     public static Database Instance;
 
-    private Vector3 firstVideoSize;
-    private Vector3 secondVideoSize;
-    private Vector3 thirdVideoSize;
+    public Vector3 firstVideoSize;
+    public Vector3 secondVideoSize;
+    public Vector3 thirdVideoSize;
     private Vector3 defaultSize = new Vector3(0.08f, 0.02f, 0.06f);
     public GameObject firstVideoData;
     public GameObject secondVideoData;
@@ -21,7 +21,8 @@ public class Database : MonoBehaviour
     private Hider firstVideoHider;
     private Hider secondVideoHider;
     private Hider thirdVideoHider;
-    private GameObject[] datas;
+    public GameObject[] datas;
+    public TextMesh textMesh;
 
     protected WorldAnchorManager anchorManager;
     protected SpatialMappingManager spatialMappingManager;
@@ -29,20 +30,10 @@ public class Database : MonoBehaviour
 
     void Start()
     {
-        anchorManager = WorldAnchorManager.Instance;
-        if (anchorManager == null)
-        {
-            Debug.LogError("This script expects that you have a WorldAnchorManager component in your scene.");
-        }
-
-        spatialMappingManager = SpatialMappingManager.Instance;
-        if (spatialMappingManager == null)
-        {
-            Debug.LogError("This script expects that you have a SpatialMappingManager component in your scene.");
-        }
+        resetAnchorConnection();
     }
 
-    private void Update()
+    public void Update()
     {
         if (!firstVideoHider || !video1 || !firstVideoData || !secondVideoData  || !thirdVideoData)
         {
@@ -57,6 +48,11 @@ public class Database : MonoBehaviour
         if (video3.transform.localScale.x == 0.0f && thirdVideoHider.showing)
         {
             video3.transform.localScale = defaultSize;
+        }
+
+        if (textMesh != GameObject.Find("FPSText (2)").GetComponent<TextMesh>())
+        {
+            textMesh = GameObject.Find("FPSText (2)").GetComponent<TextMesh>();
         }
     }
 
@@ -78,24 +74,21 @@ public class Database : MonoBehaviour
         if (videoNumber == "1")
         {
             firstVideoSize = newSize;
-            freeAnchor(firstVideoData);
             firstVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName = "DBV1" + firstVideoSize.ToString("F4");
-            lockAnchor(firstVideoData, "DBV1" + firstVideoSize.ToString("F4"));
+            firstVideoData.GetComponent<DatabaseAnchor>().saveAnchor();
         }
 
         if (videoNumber == "2")
         {
             secondVideoSize = newSize;
-            freeAnchor(secondVideoData);
             secondVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName = "DBV2" + secondVideoSize.ToString("F4");
-            lockAnchor(secondVideoData, "DBV2" + secondVideoSize.ToString("F4"));
+            secondVideoData.GetComponent<DatabaseAnchor>().saveAnchor();
         }
         if (videoNumber == "3")
         {
             thirdVideoSize = newSize;
-            freeAnchor(thirdVideoData);
             thirdVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName = "DBV3" + thirdVideoSize.ToString("F4");
-            lockAnchor(thirdVideoData, "DBV3" + thirdVideoSize.ToString("F4"));
+            thirdVideoData.GetComponent<DatabaseAnchor>().saveAnchor();
         }
         
     }
@@ -162,16 +155,6 @@ public class Database : MonoBehaviour
         video3.transform.localScale = thirdVideoSize;
     }
 
-    private void freeAnchor(GameObject videoData)
-    {
-        anchorManager.RemoveAnchor(videoData);
-    }
-
-    private void lockAnchor(GameObject videoData, string size)
-    {
-        anchorManager.AttachAnchor(videoData, size);
-    }
-
     private void hideVideos()
     {
         firstVideoHider.hide();
@@ -196,20 +179,39 @@ public class Database : MonoBehaviour
         return result;
     }
 
-    private void findDatas()
+    public void resetAnchorConnection()
     {
+        anchorManager = WorldAnchorManager.Instance;
+        if (anchorManager == null)
+        {
+            Debug.LogError("This script expects that you have a WorldAnchorManager component in your scene.");
+        }
+
+        spatialMappingManager = SpatialMappingManager.Instance;
+        if (spatialMappingManager == null)
+        {
+            Debug.LogError("This script expects that you have a SpatialMappingManager component in your scene.");
+        }
+    }
+
+    public void findDatas()
+    {
+        textMesh = GameObject.Find("FPSText (2)").GetComponent<TextMesh>();
         datas = GameObject.FindGameObjectsWithTag("Data");
+        textMesh.text += "data count : " + datas.Length.ToString();
         foreach (var data in datas)
         {
-            if (data.name == "FirstVideoData" || data.name[3] == '1')
+            if (data.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName == "FirstVideoData" || data.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName[3] == '1')
             {
                 firstVideoData = data;
             }
-            if (data.name == "SecondVideoData" || data.name[3] == '2')
+
+            if (data.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName == "SecondVideoData" || data.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName[3] == '2')
             {
                 secondVideoData = data;
             }
-            if (data.name == "ThirdVideoData" || data.name[3] == '3')
+
+            if (data.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName == "ThirdVideoData" || data.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName[3] == '3')
             {
                 thirdVideoData = data;
             }

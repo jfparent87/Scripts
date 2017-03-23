@@ -68,9 +68,11 @@ public class EditionManager : MonoBehaviour
 
         foreach (var hider in hiders)
         {
-            if (currentVideo != null && currentVideo.name != hider.gameObject.name.ToLower())
+            hider.hide();
+
+            if (currentVideo != null && currentVideo.name == hider.gameObject.name.ToLower())
             {
-                hider.hide();
+                hider.show();
             }
         }
 

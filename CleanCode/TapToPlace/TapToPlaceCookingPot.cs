@@ -30,7 +30,7 @@ public class TapToPlaceCookingPot : MonoBehaviour
     private void Start()
     {
         fireOne = GameObject.Find("CampfireOne");
-        locked = false;
+        locked = true;
         placing = false;
         nearFireTwo = false;
         nearFireThree = false;
@@ -47,7 +47,7 @@ public class TapToPlaceCookingPot : MonoBehaviour
     {
         resetTargetFireTwo();
         resetTargetFireThree();
-        if (!locked)
+        if (!locked || roomManager.editionMode)
         {
             placing = !placing;
             if (placing && roomManager.editionMode)

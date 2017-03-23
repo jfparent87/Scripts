@@ -8,7 +8,7 @@ public class ActivationZoneThree : MonoBehaviour
     public float proximityTrigger = 2.5f;
     public bool checkDistance;
     public GameObject freeVisit;
-    public List<GameObject> objectsToDeactivate;
+    public List<GameObject> objectsToHide;
 
     private bool videoThreeStarted;
     private float distance;
@@ -62,13 +62,13 @@ public class ActivationZoneThree : MonoBehaviour
         if (freeVisitActivated && !freeVisit.activeInHierarchy)
         {
             freeVisit.SetActive(true);
-            foreach (var objectToDeactivate in objectsToDeactivate)
+            foreach (var objectToHide in objectsToHide)
             {
-                if (objectToDeactivate.GetComponentInChildren<VideoController>())
+                if (objectToHide.GetComponentInChildren<VideoController>())
                 {
-                    objectToDeactivate.GetComponentInChildren<VideoController>().resetVideo();
+                    objectToHide.GetComponentInChildren<VideoController>().resetVideo();
                 }
-                objectToDeactivate.GetComponent<Hider>().hide();
+                objectToHide.GetComponent<Hider>().hide();
             }
             
         }
