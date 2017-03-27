@@ -10,21 +10,27 @@ public class ResetManager : MonoBehaviour {
     //public List<Hider> hiders;
     public TapToPlaceCookingPot cookingPot;
     public List<TapToPlaceIngredient> ingredients;
+    public List<VideoAnchorPosition> videoAnchorPositions;
     public ActivationZoneOne activationZoneOne;
     public ActivationZoneTwo activationZoneTwo;
     public ActivationZoneThree activationZoneThree;
     public VideoHider videoHiderOne;
     public GameObject freeVisit;
-    public Database database;
+    public GameObject database;
 
     public void OnSelect()
     {
         Debug.Log("Reset Scene");
         SceneManager.LoadScene("Scene002");
-        resetDatabse();
+        database.GetComponent<Database>().resetAnchorConnection();
+        database.GetComponent<Database>().findDatas();
         foreach (var ghostZone in ghostZones)
         {
             ghostZone.resetTargetPosition();
+        }
+        foreach (var videoAnchorPosition in videoAnchorPositions)
+        {
+            StartCoroutine(videoAnchorPosition.resetPosition());
         }
 
         /*foreach (var hider in hiders)
@@ -85,13 +91,6 @@ public class ResetManager : MonoBehaviour {
     private void resetActivationZoneThree()
     {
         activationZoneThree.checkDistance = false;
-    }
-
-    IEnumerator resetDatabse()
-    {
-        yield return new WaitForSeconds(1.0f);
-        database.resetAnchorConnection();
-        database.findDatas();
     }
 
 }

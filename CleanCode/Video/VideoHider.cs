@@ -5,24 +5,26 @@ public class VideoHider : MonoBehaviour
 {
 
     public bool isCreated = false;
+    public GameObject videoScreen;
     public GameObject video;
     public float proximityPlay = 2.5f;
     public float proximityStop = 3f;
     public float distance;
     public bool checkDistance;
+    public VideoAnchor videoAnchor;
 
     private RoomManager roomManager;
 
     void Start()
     {
         roomManager = GetComponentInParent<RoomManager>();
-        if (video.GetComponent<Hider>().previousSize.x == 0.0f)
+        if (videoScreen.GetComponent<Hider>().previousSize.x == 0.0f)
         {
-            video.GetComponent<Hider>().previousSize = new Vector3(0.08f, 0.2f, 0.06f);
+            videoScreen.GetComponent<Hider>().previousSize = new Vector3(0.08f, 0.2f, 0.06f);
         }
         distance = Vector3.Distance(Camera.main.transform.position, transform.position);
         checkDistance = true;
-        video.GetComponent<VideoController>().pauseVideo();
+        videoScreen.GetComponent<VideoController>().pauseVideo();
         StartCoroutine(distanceCheck());
     }
 
@@ -40,18 +42,23 @@ public class VideoHider : MonoBehaviour
 
     private void Update()
     {
-        if (roomManager.editionMode && !video.GetComponent<Hider>().showing)
+        if (roomManager.editionMode && !videoScreen.GetComponent<Hider>().showing)
         {
-            video.GetComponent<Hider>().show();
+            videoScreen.GetComponent<Hider>().show();
         }
     }
 
     public void instanciate()
     {
+        videoAnchor.freeAnchor();
+        Vector3 newPosition = new Vector3(video.transform.position.x, Camera.main.transform.position.y - 0.35f, video.transform.position.z);
+        video.transform.position = newPosition;
+        videoAnchor.transform.position = video.transform.position;
+        videoAnchor.lockAnchor();
         if (!isCreated)
         {
-            video.GetComponent<Hider>().show();
-            video.GetComponent<VideoController>().playVideo();
+            videoScreen.GetComponent<Hider>().show();
+            videoScreen.GetComponent<VideoController>().playVideo();
             isCreated = true;
         }
     }
@@ -60,8 +67,8 @@ public class VideoHider : MonoBehaviour
     {
         if (isCreated)
         {
-            video.GetComponent<VideoController>().pauseVideo();
-            video.GetComponent<Hider>().hide();
+            videoScreen.GetComponent<VideoController>().pauseVideo();
+            videoScreen.GetComponent<Hider>().hide();
             isCreated = false;
         }
     }

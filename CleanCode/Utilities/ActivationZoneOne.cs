@@ -5,6 +5,7 @@ public class ActivationZoneOne : MonoBehaviour {
     public VideoController videoOneController;
     public Hider videoOneHider;
     public VideoHider videoHiderOne;
+    public VideoHider videoHiderTwo;
     public VideoController videoTwoController;
     public Hider videoTwoHider;
     public GameObject campfire;
@@ -40,6 +41,7 @@ public class ActivationZoneOne : MonoBehaviour {
 
         if (tapToPlaceCookingPot.onFireTwoAchieved && !videoTwoStarted)
         {
+            videoHiderTwo.instanciate();
             videoTwoController.playVideo();
             videoTwoHider.show();
             videoTwoStarted = true;

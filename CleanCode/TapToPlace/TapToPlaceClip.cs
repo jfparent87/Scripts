@@ -9,6 +9,7 @@ public class TapToPlaceClip : MonoBehaviour
     public VideoHider videoHider;
     public float speed = 0.5f;
     public float distanceToCameraWhenPlacing = 1.2f;
+    public GameObject videoAnchor;
 
     private RoomManager roomManager;
     private Vector3 targetPosition;
@@ -46,6 +47,7 @@ public class TapToPlaceClip : MonoBehaviour
         }
         if (!placing && roomManager.editionMode)
         {
+            videoAnchor.transform.position = gameObject.transform.parent.position;
             lockAnchor();
         }
     }
@@ -56,12 +58,12 @@ public class TapToPlaceClip : MonoBehaviour
         {
             if (videoHider.isCreated)
             {
-                videoHider.video.GetComponent<VideoController>().pauseVideo();
+                videoHider.videoScreen.GetComponent<VideoController>().pauseVideo();
             }
             
             if (!videoHider.isCreated) {
                 videoHider.instanciate();
-                videoHider.video.GetComponent<VideoController>().pauseVideo();
+                videoHider.videoScreen.GetComponent<VideoController>().pauseVideo();
             }
 
             placeClipInFrontOfCamera();
@@ -70,12 +72,13 @@ public class TapToPlaceClip : MonoBehaviour
 
     public void freeAnchor()
     {
-        anchorManager.RemoveAnchor(transform.parent.gameObject);
+        anchorManager.RemoveAnchor(videoAnchor);
     }
 
     public void lockAnchor()
     {
-        anchorManager.AttachAnchor(transform.parent.gameObject, GetComponentInParent<VideoAnchor>().SavedAnchorFriendlyName);
+        videoAnchor.transform.position = this.transform.parent.transform.position;
+        anchorManager.AttachAnchor(videoAnchor, videoAnchor.GetComponent<VideoAnchor>().SavedAnchorFriendlyName);
     }
 
     private void placeClipInFrontOfCamera()
@@ -98,9 +101,4 @@ public class TapToPlaceClip : MonoBehaviour
         }
     }
 
-    IEnumerator waitAndFreeAnchor()
-    {
-        yield return new WaitForSeconds(0.5f);
-        freeAnchor();
-    }
 }

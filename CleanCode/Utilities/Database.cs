@@ -11,6 +11,7 @@ public class Database : MonoBehaviour
     public Vector3 firstVideoSize;
     public Vector3 secondVideoSize;
     public Vector3 thirdVideoSize;
+    public ResetManager resetManager;
     private Vector3 defaultSize = new Vector3(0.08f, 0.02f, 0.06f);
     public GameObject firstVideoData;
     public GameObject secondVideoData;
@@ -53,6 +54,11 @@ public class Database : MonoBehaviour
         if (textMesh != GameObject.Find("FPSText (2)").GetComponent<TextMesh>())
         {
             textMesh = GameObject.Find("FPSText (2)").GetComponent<TextMesh>();
+        }
+
+        if (!resetManager)
+        {
+            fetchResetManager();
         }
     }
 
@@ -112,6 +118,12 @@ public class Database : MonoBehaviour
         firstVideoHider = GameObject.Find("wendake1").GetComponent<Hider>();
         secondVideoHider = GameObject.Find("wendake2").GetComponent<Hider>();
         thirdVideoHider = GameObject.Find("wendake3").GetComponent<Hider>();
+    }
+
+    public void fetchResetManager()
+    {
+        resetManager = GameObject.Find("ResetSphere").GetComponent<ResetManager>();
+        resetManager.database = gameObject;
     }
 
     public void fetchVideos()

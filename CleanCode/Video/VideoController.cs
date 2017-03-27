@@ -10,7 +10,6 @@ public class VideoController : MonoBehaviour {
     public int activateAfterSeconds;
     public bool activated = false;
     public TapToPlaceCookingPot cookingPot;
-    public VideoAnchor videoAnchor;
 
     private System.TimeSpan activationTime;
     private int vsyncprevious;

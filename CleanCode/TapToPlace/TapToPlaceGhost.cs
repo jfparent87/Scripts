@@ -9,7 +9,7 @@ public class TapToPlaceGhost : MonoBehaviour
     public float distanceToCameraWhenPlacing = 1.2f;
     public Vector3 objectScale;
 
-    private RoomManager roomManager;
+    public RoomManager roomManager;
     private Vector3 targetPosition;
     private Vector3 ghostZonePosition;
     private bool targetPositionAchieved;
@@ -73,12 +73,22 @@ public class TapToPlaceGhost : MonoBehaviour
                 targetPositionAchieved = false;
                 targetPositionAchievedOnce = false;
             }
+
+            if (GetComponent<Hider>().previousSize != new Vector3(0.8f, 0.8f, 0.8f))
+            {
+                GetComponent<Hider>().previousSize = new Vector3(0.8f, 0.8f, 0.8f);
+            }
         }
         else
         {
             if (!GetComponent<Hider>().showing)
             {
                 GetComponent<Hider>().show();
+            }
+            if (gameObject.transform.localScale != objectScale)
+            {
+                Debug.Log("ghostobejct : " + gameObject.transform.localScale);
+                gameObject.transform.localScale = objectScale;
             }
         }
     }
