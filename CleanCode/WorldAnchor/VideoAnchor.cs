@@ -33,12 +33,10 @@ public class VideoAnchor : MonoBehaviour
     public void freeAnchor()
     {
         anchorManager.RemoveAnchor(transform.gameObject);
-        Debug.Log("freeanchor called");
     }
 
     public void lockAnchor()
     {
         anchorManager.AttachAnchor(transform.gameObject, SavedAnchorFriendlyName);
-        Debug.Log("lockanchor called");
     }
 }

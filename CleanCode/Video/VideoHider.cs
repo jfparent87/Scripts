@@ -51,7 +51,7 @@ public class VideoHider : MonoBehaviour
     public void instanciate()
     {
         videoAnchor.freeAnchor();
-        Vector3 newPosition = new Vector3(video.transform.position.x, Camera.main.transform.position.y - 0.35f, video.transform.position.z);
+        Vector3 newPosition = new Vector3(video.transform.position.x, Camera.main.transform.position.y - 0.3f, video.transform.position.z);
         video.transform.position = newPosition;
         videoAnchor.transform.position = video.transform.position;
         videoAnchor.lockAnchor();
