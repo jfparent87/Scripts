@@ -9,6 +9,7 @@ public class ActivationZoneThree : MonoBehaviour
     public bool checkDistance;
     public GameObject freeVisit;
     public List<GameObject> objectsToHide;
+    public List<GameObject> ghostObjects;
 
     private bool videoThreeStarted;
     private float distance;
@@ -70,7 +71,10 @@ public class ActivationZoneThree : MonoBehaviour
                 }
                 objectToHide.GetComponent<Hider>().hide();
             }
-            
+            foreach (var ghostObject in ghostObjects)
+            {
+                ghostObject.GetComponent<Hider>().hide();
+            }
         }
 
         if (!roomManager.editionMode && freeVisit.activeInHierarchy && !freeVisitActivated)

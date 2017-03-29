@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class TapToPlaceGhost : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class TapToPlaceGhost : MonoBehaviour
     private Vector3 ghostObjectScale;
     private float heightCorrection = 1.5f;
     private float step;
+    private bool waitingToGoBack = false;
 
     private void Start()
     {
@@ -60,6 +62,10 @@ public class TapToPlaceGhost : MonoBehaviour
             {
                 targetPositionAchievedOnce = true;
                 transform.Rotate(Vector3.up, speed * rotationSpeed * Time.deltaTime);
+                if (!waitingToGoBack)
+                {
+                    StartCoroutine(waitAndGoBackInPlace());
+                }
             }
 
             if (!move && transform.position != ghostZonePosition)
@@ -144,5 +150,13 @@ public class TapToPlaceGhost : MonoBehaviour
         ghostObjectRotation.z = 0;
         ghostObjectRotation *= Quaternion.Euler(0, 180f, 0);
         this.transform.rotation = ghostObjectRotation;
+    }
+
+    IEnumerator waitAndGoBackInPlace()
+    {
+        waitingToGoBack = true;
+        yield return new WaitForSeconds(15.0f);
+        move = !move;
+        waitingToGoBack = false;
     }
 }
