@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 
-public class EditionLabel : MonoBehaviour {
-    
+public class ActivationZoneEditionLabel : MonoBehaviour
+{
+
     private Quaternion videoRotation;
 
-    void Update () {
-        if (GetComponentInParent<Hider>().showing)
+    void Update()
+    {
+        if (GetComponent<Hider>().showing)
         {
             rotateToFaceCamera();
         }

@@ -4,24 +4,24 @@ using System.Collections.Generic;
 public class RoomManager : MonoBehaviour {
 
     public bool editionMode = false;
-    public List<Hider> buttons;
+    public List<Hider> editionObjects;
     public bool show = true;
 
     private void Update()
     {
         if (editionMode && !show)
         {
-            for (int i = 0; i < buttons.Count; i++)
+            for (int i = 0; i < editionObjects.Count; i++)
             {
-                buttons[i].show();
+                editionObjects[i].show();
             }
             show = true;
         }
         if(!editionMode && show)
         {
-            for (int i = 0; i < buttons.Count; i++)
+            for (int i = 0; i < editionObjects.Count; i++)
             {
-                buttons[i].hide();
+                editionObjects[i].hide();
             }
             show = false;
         }

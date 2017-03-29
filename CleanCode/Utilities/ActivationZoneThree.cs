@@ -16,7 +16,6 @@ public class ActivationZoneThree : MonoBehaviour
     private bool freeVisitActivated;
     private RoomManager roomManager;
     private MeshRenderer meshRendered;
-    private TextMesh textMesh;
     private bool checkDistanceStarted;
 
     void Start()
@@ -28,11 +27,6 @@ public class ActivationZoneThree : MonoBehaviour
         distance = Vector3.Distance(Camera.main.transform.position, this.transform.position);
         checkDistance = false;        
         meshRendered = GetComponent<MeshRenderer>();
-        textMesh = GetComponentInChildren<TextMesh>();
-        if (!roomManager.editionMode)
-        {
-            textMesh.text = "";
-        }
     }
 
     private void Update()
@@ -40,13 +34,11 @@ public class ActivationZoneThree : MonoBehaviour
         if (roomManager.editionMode && !meshRendered.enabled)
         {
             meshRendered.enabled = true;
-            textMesh.text = "Activation Zone Three";
         }
 
         if (!roomManager.editionMode && meshRendered.enabled)
         {
             meshRendered.enabled = false;
-            textMesh.text = "";
         }
 
         if (checkDistance && !checkDistanceStarted)

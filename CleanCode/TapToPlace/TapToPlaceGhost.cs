@@ -20,6 +20,7 @@ public class TapToPlaceGhost : MonoBehaviour
     private float heightCorrection = 1.5f;
     private float step;
     private bool waitingToGoBack = false;
+    private bool moving = false;
 
     private void Start()
     {
@@ -36,7 +37,10 @@ public class TapToPlaceGhost : MonoBehaviour
         }
         else
         {
-            move = !move;
+            if (!moving)
+            {
+                move = !move;
+            }
         }
     }
 
@@ -47,14 +51,18 @@ public class TapToPlaceGhost : MonoBehaviour
             if (transform.position == targetPosition)
             {
                 targetPositionAchieved = true;
+                moving = false;
             }
-            else
+
+            if (transform.position == ghostZonePosition)
             {
                 targetPositionAchieved = false;
+                moving = false;
             }
 
             if (move && !targetPositionAchieved)
             {
+                moving = true;
                 moveToUser();
             }
 
@@ -70,6 +78,7 @@ public class TapToPlaceGhost : MonoBehaviour
 
             if (!move && transform.position != ghostZonePosition)
             {
+                moving = true;
                 moveToGhostZone();
             }
 
@@ -93,7 +102,6 @@ public class TapToPlaceGhost : MonoBehaviour
             }
             if (gameObject.transform.localScale != objectScale)
             {
-                Debug.Log("ghostobejct : " + gameObject.transform.localScale);
                 gameObject.transform.localScale = objectScale;
             }
         }
@@ -139,7 +147,6 @@ public class TapToPlaceGhost : MonoBehaviour
 
     private void scaleToSmallSize()
     {
-        Debug.Log("scaleToSmallSize on " + gameObject.name);
         ghostObjectScale = new Vector3(0.0f, 0.0f, 0.0f);
     }
 
@@ -156,7 +163,10 @@ public class TapToPlaceGhost : MonoBehaviour
     {
         waitingToGoBack = true;
         yield return new WaitForSeconds(15.0f);
-        move = !move;
+        if (gameObject.transform.position != ghostZonePosition)
+        {
+            move = !move;
+        }
         waitingToGoBack = false;
     }
 }
