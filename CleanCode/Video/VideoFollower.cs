@@ -37,6 +37,6 @@ public class VideoFollower : MonoBehaviour {
         videoRotation = Camera.main.transform.localRotation;
         videoRotation.x = 0;
         videoRotation.z = 0;
-        this.transform.parent.rotation = videoRotation;
+        transform.parent.rotation = videoRotation;
     }
 }

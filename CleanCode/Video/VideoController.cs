@@ -4,6 +4,7 @@ using System.Diagnostics;
 [RequireComponent (typeof(AudioSource))]
 
 public class VideoController : MonoBehaviour {
+
     public RoomManager roomManager;
     public MovieTexture movie;
     public AudioSource audioSource;
@@ -27,7 +28,6 @@ public class VideoController : MonoBehaviour {
         audioSource.dopplerLevel = 0.0f;
         audioSource.rolloffMode = AudioRolloffMode.Custom;
         activationTime = new System.TimeSpan(0, 0, activateAfterSeconds);
-        UnityEngine.Debug.Log(activationTime);
         timer = new Stopwatch();
     }
 
@@ -64,7 +64,6 @@ public class VideoController : MonoBehaviour {
         if (!activated && timer.Elapsed >= activationTime)
         {
             //TODO : event to activate 
-            UnityEngine.Debug.Log( gameObject.name + " activated.");
             pauseVideo();
             activated = true;
             if (gameObject.name == "wendake1")
@@ -77,7 +76,6 @@ public class VideoController : MonoBehaviour {
 
     public void resetVideo()
     {
-        UnityEngine.Debug.Log("restart");
         movie.Stop();
         timer = new Stopwatch();
         activated = false;
@@ -127,7 +125,6 @@ public class VideoController : MonoBehaviour {
     {
         timer.Start();
         var elapsed = timer.Elapsed;
-        UnityEngine.Debug.Log(gameObject.name + " unpause time elapsed = " + elapsed.ToString());
     }
 
     public void stopTimer()
@@ -136,7 +133,6 @@ public class VideoController : MonoBehaviour {
         {
             timer.Stop();
             var elapsed = timer.Elapsed;
-            UnityEngine.Debug.Log(gameObject.name + " time elapsed = " + elapsed.ToString());
         }
     }
 }

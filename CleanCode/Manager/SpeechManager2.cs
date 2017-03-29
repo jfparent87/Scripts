@@ -9,10 +9,6 @@ public class SpeechManager2 : MonoBehaviour
     Dictionary<string, System.Action> keywords = new Dictionary<string, System.Action>();
     public ResetManager resetManager;
     public EditionManager editionManager;
-    public List<VideoController> videoControllers;
-    public List<TapToPlaceGhost> ghostZones;
-    public List<VideoHider> videoHiders;
-    public List<Hider> hiders;
 
     private RoomManager roomManager;
 

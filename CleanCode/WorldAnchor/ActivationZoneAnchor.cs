@@ -8,6 +8,7 @@ public class ActivationZoneAnchor : MonoBehaviour
     public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
 
     private bool placing = false;
+
     protected WorldAnchorManager anchorManager;
     protected SpatialMappingManager spatialMappingManager;
 
@@ -37,11 +38,11 @@ public class ActivationZoneAnchor : MonoBehaviour
 
     public void freeAnchor()
     {
-        anchorManager.RemoveAnchor(this.gameObject);
+        anchorManager.RemoveAnchor(gameObject);
     }
 
     public void lockAnchor()
     {
-        anchorManager.AttachAnchor(this.gameObject, SavedAnchorFriendlyName);
+        anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
     }
 }

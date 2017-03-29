@@ -7,23 +7,23 @@ public class Database : MonoBehaviour
 {
 
     public static Database Instance;
-
     public Vector3 firstVideoSize;
     public Vector3 secondVideoSize;
     public Vector3 thirdVideoSize;
     public ResetManager resetManager;
-    private Vector3 defaultSize = new Vector3(0.08f, 0.02f, 0.06f);
     public GameObject firstVideoData;
     public GameObject secondVideoData;
     public GameObject thirdVideoData;
-    private GameObject video1;
-    private GameObject video2;
-    private GameObject video3;
+    public GameObject[] datas;
+    public TextMesh textMesh;
+
     private Hider firstVideoHider;
     private Hider secondVideoHider;
     private Hider thirdVideoHider;
-    public GameObject[] datas;
-    public TextMesh textMesh;
+    private GameObject video1;
+    private GameObject video2;
+    private GameObject video3;
+    private Vector3 defaultSize = new Vector3(0.08f, 0.02f, 0.06f);
 
     protected WorldAnchorManager anchorManager;
     protected SpatialMappingManager spatialMappingManager;

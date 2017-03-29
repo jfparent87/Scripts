@@ -4,6 +4,7 @@ using HoloToolkit.Unity.SpatialMapping;
 
 public class CookingPotAnchor : MonoBehaviour
 {
+
     public string savedAnchorFriendlyName = "SavedAnchorFriendlyName";
 
     protected WorldAnchorManager anchorManager;

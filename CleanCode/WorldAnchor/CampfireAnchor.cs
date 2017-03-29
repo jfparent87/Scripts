@@ -10,6 +10,7 @@ public class CampfireAnchor : MonoBehaviour
 
     private bool placing = false;
     private RoomManager roomManager;
+
     protected WorldAnchorManager anchorManager;
     protected SpatialMappingManager spatialMappingManager;
 

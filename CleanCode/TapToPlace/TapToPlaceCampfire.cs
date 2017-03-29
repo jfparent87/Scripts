@@ -8,9 +8,10 @@ public class TapToPlaceCampfire : MonoBehaviour
     public TapToPlaceCookingPot tapToPlaceCookingPot;
     public GameObject campfireAnchor;
     public GameObject activationZone;
+    public bool placing;
 
     private RoomManager roomManager;
-    public bool placing;
+
     protected WorldAnchorManager anchorManager;
     protected SpatialMappingManager spatialMappingManager;
 
@@ -57,9 +58,9 @@ public class TapToPlaceCampfire : MonoBehaviour
 
     void Update()
     {
-        if (this.transform.position != campfireAnchor.transform.position)
+        if (transform.position != campfireAnchor.transform.position)
         {
-            this.transform.position = campfireAnchor.transform.position;
+            transform.position = campfireAnchor.transform.position;
         }
 
         if (placing)
@@ -70,11 +71,10 @@ public class TapToPlaceCampfire : MonoBehaviour
             if (Physics.Raycast(headPosition, gazeDirection, out hitInfo,
                 30.0f, SpatialMapping.PhysicsRaycastMask))
             {
-                this.transform.position = hitInfo.point;
+                transform.position = hitInfo.point;
             }
         }
     }
-
 
     public void freeAnchor()
     {

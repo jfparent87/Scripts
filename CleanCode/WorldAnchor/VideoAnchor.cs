@@ -7,6 +7,7 @@ public class VideoAnchor : MonoBehaviour
     public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
 
     private bool placing = false;
+
     protected WorldAnchorManager anchorManager;
     protected SpatialMappingManager spatialMappingManager;
 

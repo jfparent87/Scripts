@@ -16,6 +16,7 @@ public class TapToPlaceClip : MonoBehaviour
     private float heightCorrection = 1.5f;
     private float step;
     private Quaternion clipRotation;
+
     protected WorldAnchorManager anchorManager;
     protected SpatialMappingManager spatialMappingManager;
 

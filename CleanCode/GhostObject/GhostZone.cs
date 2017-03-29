@@ -11,10 +11,11 @@ public class GhostZone : MonoBehaviour {
     private RoomManager roomManager;
     private Vector3 targetPosition;
     private bool placing = false;
-    protected WorldAnchorManager anchorManager;
-    protected SpatialMappingManager spatialMappingManager;
     private float heightCorrection = 1.5f;
     private float step;
+
+    protected WorldAnchorManager anchorManager;
+    protected SpatialMappingManager spatialMappingManager;
 
     void Start()
     {

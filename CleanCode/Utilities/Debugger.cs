@@ -7,7 +7,9 @@ public class Debugger : MonoBehaviour {
     public RoomManager roomManager;
     public TextMesh hololensDebugLine1;
     public TextMesh hololensDebugLine2;
+
     private Hider hider;
+
     protected WorldAnchorManager anchorManager;
     protected SpatialMappingManager spatialMappingManager;
 

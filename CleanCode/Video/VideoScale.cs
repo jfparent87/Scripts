@@ -5,8 +5,8 @@ public class VideoScale : MonoBehaviour {
 
     public GameObject videoScreen;
     public float scaleFactor;
-
     public GameObject database;
+
     private Vector3 screen;
 
     private void Start()
