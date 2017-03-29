@@ -9,8 +9,8 @@ public class TapToPlaceGhost : MonoBehaviour
     public GameObject ghostZone;
     public float distanceToCameraWhenPlacing = 1.2f;
     public Vector3 objectScale;
-
     public RoomManager roomManager;
+
     private Vector3 targetPosition;
     private Vector3 ghostZonePosition;
     private bool targetPositionAchieved;

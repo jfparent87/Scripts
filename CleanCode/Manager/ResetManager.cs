@@ -11,10 +11,8 @@ public class ResetManager : MonoBehaviour {
     public List<VideoAnchorPosition> videoAnchorPositions;
     public GameObject database;
 
-    public void OnSelect()
+    void Start()
     {
-        Debug.Log("Reset Scene");
-        SceneManager.LoadScene("Scene002");
         database.GetComponent<Database>().resetAnchorConnection();
         database.GetComponent<Database>().findDatas();
         foreach (var ghostZone in ghostZones)
@@ -25,12 +23,27 @@ public class ResetManager : MonoBehaviour {
         {
             StartCoroutine(videoAnchorPosition.resetPosition());
         }
+        foreach (var videoController in videoControllers)
+        {
+            StartCoroutine(resetGhostPositions(videoController));
+        }
+    }
+
+    public void OnSelect()
+    {
+        SceneManager.LoadScene("Scene002");
     }
 
     IEnumerator resetGhostPositions(TapToPlaceGhost ghostZone)
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
         ghostZone.resetTargetPosition();
+    }
+
+    IEnumerator resetGhostPositions(VideoController videoController)
+    {
+        yield return new WaitForSeconds(0.2f);
+        videoController.resetVideo();
     }
 
 }

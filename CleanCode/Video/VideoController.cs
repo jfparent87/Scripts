@@ -77,6 +77,7 @@ public class VideoController : MonoBehaviour {
 
     public void resetVideo()
     {
+        UnityEngine.Debug.Log("restart");
         movie.Stop();
         timer = new Stopwatch();
         activated = false;
