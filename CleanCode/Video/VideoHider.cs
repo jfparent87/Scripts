@@ -7,7 +7,6 @@ public class VideoHider : MonoBehaviour
     public bool isCreated = false;
     public GameObject videoScreen;
     public GameObject video;
-    public float proximityPlay = 2.5f;
     public float proximityStop = 3f;
     public float distance;
     public bool checkDistance;
@@ -76,10 +75,6 @@ public class VideoHider : MonoBehaviour
     void verifyDistance()
     {
         distance = Vector3.Distance(Camera.main.transform.position, transform.position);
-        if (distance < proximityPlay && !isCreated && !roomManager.editionMode)
-        {
-            instanciate();
-        }
         if (distance > proximityStop && isCreated && !roomManager.editionMode)
         {
             destroy();
@@ -93,5 +88,11 @@ public class VideoHider : MonoBehaviour
             yield return new WaitForSeconds(2.0f);
             verifyDistance();
         }
+    }
+
+    public IEnumerator waitAndInstanciate()
+    {
+        yield return new WaitForSeconds(3.0f);
+        instanciate();
     }
 }

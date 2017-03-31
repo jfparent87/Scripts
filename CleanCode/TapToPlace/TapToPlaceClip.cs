@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using HoloToolkit.Unity;
 using HoloToolkit.Unity.SpatialMapping;
-using System.Collections;
 
 public class TapToPlaceClip : MonoBehaviour
 {

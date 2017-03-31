@@ -30,7 +30,7 @@ public class ActivationZoneTwo : MonoBehaviour
             tapToPlaceCookingPot.nearFireThree = true;
             videoTwoController.pauseVideo();
             videoTwoHider.hide();
-            videoHiderTwo.proximityPlay = 0.0f;
+            //videoHiderTwo.proximityPlay = 0.0f;
             collided = true;
             activationZoneThree.checkDistance = true;
         }

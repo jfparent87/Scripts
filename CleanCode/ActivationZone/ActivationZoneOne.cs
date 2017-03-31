@@ -27,7 +27,6 @@ public class ActivationZoneOne : MonoBehaviour {
             tapToPlaceCookingPot.nearFireTwo = true;
             videoOneController.pauseVideo();
             videoOneHider.hide();
-            videoHiderOne.proximityPlay = 0.0f;
             collided = true;
         }
     }
