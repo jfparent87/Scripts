@@ -9,6 +9,7 @@ public class TapToPlaceClip : MonoBehaviour
     public float speed = 0.5f;
     public float distanceToCameraWhenPlacing = 1.2f;
     public GameObject videoAnchor;
+    public GameObject thisVideo;
 
     private RoomManager roomManager;
     private Vector3 targetPosition;
@@ -47,7 +48,7 @@ public class TapToPlaceClip : MonoBehaviour
         }
         if (!placing && roomManager.editionMode)
         {
-            videoAnchor.transform.position = gameObject.transform.parent.position;
+            videoAnchor.GetComponent<VideoAnchor>().resetPosition(transform.position);
             lockAnchor();
         }
     }
@@ -72,13 +73,13 @@ public class TapToPlaceClip : MonoBehaviour
 
     public void freeAnchor()
     {
-        anchorManager.RemoveAnchor(videoAnchor);
+        videoAnchor.GetComponent<VideoAnchor>().freeAnchor();
     }
 
     public void lockAnchor()
     {
-        videoAnchor.transform.position = transform.parent.transform.position;
-        anchorManager.AttachAnchor(videoAnchor, videoAnchor.GetComponent<VideoAnchor>().SavedAnchorFriendlyName);
+        videoAnchor.transform.position = thisVideo.transform.position;
+        videoAnchor.GetComponent<VideoAnchor>().lockAnchor();
     }
 
     private void placeClipInFrontOfCamera()

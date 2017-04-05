@@ -15,7 +15,6 @@ namespace HoloToolkit.Unity
     public class WorldAnchorManager : Singleton<WorldAnchorManager>
     {
 
-        public TextMesh hololensDebugLine1;
         public TextMesh hololensDebugLine2;
 
         /// <summary>

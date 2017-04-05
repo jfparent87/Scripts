@@ -40,4 +40,9 @@ public class VideoAnchor : MonoBehaviour
     {
         anchorManager.AttachAnchor(transform.gameObject, SavedAnchorFriendlyName);
     }
+
+    public void resetPosition(Vector3 position)
+    {
+        transform.position = position;
+    }
 }
