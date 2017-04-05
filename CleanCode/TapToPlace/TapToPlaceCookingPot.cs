@@ -72,35 +72,38 @@ public class TapToPlaceCookingPot : MonoBehaviour
 
     void Update()
     {
-        if (transform.position == fireTwoPosition)
-        {
-            arrivedAtFireTwo();
-            fireTwoFlames.SetActive(true);
-        }
-
-        if (transform.position == fireThreePosition)
-        {
-            onFireThreeAchieved = true;
-        }
-
         if (placing)
         {
             placeCookingPotInFrontOfCamera();
         }
 
-        if (nearFireTwo && !onFireTwoAchieved)
+        if (!roomManager.editionMode)
         {
-            placeCookingPotOverFire(fireTwoPosition);
-        }
+            if (transform.position == fireTwoPosition)
+            {
+                arrivedAtFireTwo();
+                fireTwoFlames.SetActive(true);
+            }
 
-        if (nearFireThree && !onFireThreeAchieved)
-        {
-            placeCookingPotOverFire(fireThreePosition);
-        }
+            if (transform.position == fireThreePosition)
+            {
+                onFireThreeAchieved = true;
+            }
 
-        if (ingredients.Count == 0 && fireTwoFlames.activeInHierarchy)
-        {
-            fireTwoFlames.GetComponentInChildren<ParticleSystem>().Stop();
+            if (nearFireTwo && !onFireTwoAchieved)
+            {
+                placeCookingPotOverFire(fireTwoPosition);
+            }
+
+            if (nearFireThree && !onFireThreeAchieved)
+            {
+                placeCookingPotOverFire(fireThreePosition);
+            }
+
+            if (ingredients.Count == 0 && fireTwoFlames.activeInHierarchy)
+            {
+                fireTwoFlames.GetComponentInChildren<ParticleSystem>().Stop();
+            }
         }
     }
 

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 public class EditionManager : MonoBehaviour
 {
-    public List<VideoController> videoControllers;
+    public List<VideoPlayerController> videoControllers;
     public List<VideoHider> videoHiders;
     public List<Hider> hiders;
     public RoomManager roomManager;
 
-    private VideoController currentVideo = null;
+    private VideoPlayerController currentVideo = null;
 
     public void OnSelect()
     {

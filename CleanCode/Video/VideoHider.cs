@@ -23,7 +23,8 @@ public class VideoHider : MonoBehaviour
         }
         distance = Vector3.Distance(Camera.main.transform.position, transform.position);
         checkDistance = true;
-        videoScreen.GetComponent<VideoController>().pauseVideo();
+        //videoScreen.GetComponent<VideoController>().pauseVideo();
+        videoScreen.GetComponent<VideoPlayerController>().pauseVideo();
         StartCoroutine(distanceCheck());
     }
 
@@ -57,7 +58,8 @@ public class VideoHider : MonoBehaviour
         if (!isCreated)
         {
             videoScreen.GetComponent<Hider>().show();
-            videoScreen.GetComponent<VideoController>().playVideo();
+            //videoScreen.GetComponent<VideoController>().playVideo();
+            videoScreen.GetComponent<VideoPlayerController>().playVideo();
             isCreated = true;
         }
     }
@@ -67,6 +69,7 @@ public class VideoHider : MonoBehaviour
         if (isCreated)
         {
             videoScreen.GetComponent<VideoController>().pauseVideo();
+            //videoScreen.GetComponent<VideoPlayerController>().pauseVideo();
             videoScreen.GetComponent<Hider>().hide();
             isCreated = false;
         }
@@ -92,7 +95,7 @@ public class VideoHider : MonoBehaviour
 
     public IEnumerator waitAndInstanciate()
     {
-        yield return new WaitForSeconds(3.0f);
+        yield return new WaitForSeconds(8.0f);
         instanciate();
     }
 }

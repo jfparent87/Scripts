@@ -81,6 +81,10 @@ public class ActivationZoneThree : MonoBehaviour
         if (distance < proximityTrigger)
         {
             freeVisitActivated = true;
+            foreach (var ghostObject in ghostObjects)
+            {
+                ghostObject.GetComponent<TapToPlaceGhost>().resetTargetPosition();
+            }
         }
     }
 

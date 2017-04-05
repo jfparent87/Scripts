@@ -135,36 +135,56 @@ public class Database : MonoBehaviour
 
     public void loadSizes()
     {
-        if (firstVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName != "FirstVideoData")
+        if (firstVideoData != null)
         {
-            firstVideoSize = stringToVector3(firstVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName.Remove(0, 4));
+            if (firstVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName != "FirstVideoData")
+            {
+                firstVideoSize = stringToVector3(firstVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName.Remove(0, 4));
+            }
+            else
+            {
+                firstVideoSize = defaultSize;
+            }
+            video1.transform.localScale = firstVideoSize;
         }
         else
         {
-            firstVideoSize = defaultSize;
+            findDatas();
         }
 
-        if (secondVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName != "SecondVideoData")
+        if (secondVideoData != null)
         {
-            secondVideoSize = stringToVector3(secondVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName.Remove(0, 4));
+            if (secondVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName != "SecondVideoData")
+            {
+                secondVideoSize = stringToVector3(secondVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName.Remove(0, 4));
+            }
+            else
+            {
+                secondVideoSize = defaultSize;
+            }
+            video2.transform.localScale = secondVideoSize;
         }
         else
         {
-            secondVideoSize = defaultSize;
+            findDatas();
         }
 
-        if (thirdVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName != "ThirdVideoData")
+        if (thirdVideoData != null)
         {
-            thirdVideoSize = stringToVector3(thirdVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName.Remove(0, 4));
+            if (thirdVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName != "ThirdVideoData")
+            {
+                thirdVideoSize = stringToVector3(thirdVideoData.GetComponent<DatabaseAnchor>().SavedAnchorFriendlyName.Remove(0, 4));
+            }
+            else
+            {
+                thirdVideoSize = defaultSize;
+            }
+            video3.transform.localScale = thirdVideoSize;
         }
         else
         {
-            thirdVideoSize = defaultSize;
+            findDatas();
         }
-
-        video1.transform.localScale = firstVideoSize;
-        video2.transform.localScale = secondVideoSize;
-        video3.transform.localScale = thirdVideoSize;
     }
 
     private void hideVideos()

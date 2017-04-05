@@ -14,6 +14,7 @@ public class ActivationZoneTwo : MonoBehaviour
     public ActivationZoneThree activationZoneThree;
     public bool collided;
     public bool videoThreeStarted;
+    public RoomManager roomManager;
 
     void Start()
     {
@@ -25,12 +26,11 @@ public class ActivationZoneTwo : MonoBehaviour
 
     void OnTriggerEnter(Collider collider)
     {
-        if (collider.GetComponent<Collider>().name == "CookingPotTriggerZone")
+        if (collider.GetComponent<Collider>().name == "CookingPotTriggerZone" && !roomManager.editionMode)
         {
             tapToPlaceCookingPot.nearFireThree = true;
             videoTwoController.pauseVideo();
             videoTwoHider.hide();
-            //videoHiderTwo.proximityPlay = 0.0f;
             collided = true;
             activationZoneThree.checkDistance = true;
         }

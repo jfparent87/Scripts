@@ -11,6 +11,7 @@ public class ActivationZoneOne : MonoBehaviour {
     public GameObject campfire;
     public bool collided = false;
     public bool videoTwoStarted = false;
+    public RoomManager roomManager;
 
     private TapToPlaceCookingPot tapToPlaceCookingPot;
 
@@ -22,7 +23,7 @@ public class ActivationZoneOne : MonoBehaviour {
 
     void OnTriggerEnter(Collider collider)
     {
-        if (collider.GetComponent<Collider>().name == "CookingPotTriggerZone")
+        if (collider.GetComponent<Collider>().name == "CookingPotTriggerZone" && !roomManager.editionMode)
         {
             tapToPlaceCookingPot.nearFireTwo = true;
             videoOneController.pauseVideo();

@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 using System.Diagnostics;
+using UnityEngine.Video;
 
-[RequireComponent (typeof(AudioSource))]
+[RequireComponent(typeof(AudioSource))]
 
-public class VideoController : MonoBehaviour {
+public class VideoPlayerController : MonoBehaviour
+{
 
     public RoomManager roomManager;
-    public MovieTexture movie;
-    public AudioSource audioSource;
+    public VideoPlayer movie;
+    //public AudioSource audioSource;
     public int activateAfterSeconds;
     public bool activated = false;
     public TapToPlaceCookingPot cookingPot;
@@ -18,15 +20,16 @@ public class VideoController : MonoBehaviour {
     private Stopwatch totalTime;
     private bool timerStarted = false;
 
-    void Start () {
+    void Start()
+    {
         vsyncprevious = QualitySettings.vSyncCount;
         QualitySettings.vSyncCount = 0;
-        movie = GetComponent<Renderer>().material.mainTexture as MovieTexture;
-        audioSource = GetComponent<AudioSource>();
+        movie = GetComponent<VideoPlayer>();
+        /*audioSource = GetComponent<AudioSource>();
         audioSource.spatialize = true;
         audioSource.spatialBlend = 1.0f;
         audioSource.dopplerLevel = 0.0f;
-        audioSource.rolloffMode = AudioRolloffMode.Custom;
+        audioSource.rolloffMode = AudioRolloffMode.Custom;*/
         activationTime = new System.TimeSpan(0, 0, activateAfterSeconds);
         timer = new Stopwatch();
     }
@@ -56,10 +59,10 @@ public class VideoController : MonoBehaviour {
             QualitySettings.vSyncCount = vsyncprevious;
         }
 
-        if (!audioSource)
+        /*if (!audioSource)
         {
             audioSource = GetComponent<AudioSource>();
-        }
+        }*/
 
         if (!activated && timer.Elapsed >= activationTime && !roomManager.editionMode)
         {
@@ -85,9 +88,9 @@ public class VideoController : MonoBehaviour {
         timer = new Stopwatch();
         activated = false;
         timerStarted = false;
-        audioSource.Stop();
+        /*audioSource.Stop();
         audioSource.Play();
-        audioSource.Pause();
+        audioSource.Pause();*/
     }
 
     public void playVideo()
@@ -101,15 +104,15 @@ public class VideoController : MonoBehaviour {
         {
             unPauseTimer();
         }
-        
-        audioSource.UnPause();
+
+        /*audioSource.UnPause();*/
     }
 
     public void pauseVideo()
     {
         stopTimer();
         movie.Pause();
-        try
+        /*try
         {
             audioSource.Pause();
         }
@@ -117,7 +120,7 @@ public class VideoController : MonoBehaviour {
         {
             audioSource = GetComponent<AudioSource>();
             audioSource.Pause();
-        }
+        }*/
     }
 
     public void startTimer()
