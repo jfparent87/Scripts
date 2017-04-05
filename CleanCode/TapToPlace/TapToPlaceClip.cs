@@ -58,12 +58,12 @@ public class TapToPlaceClip : MonoBehaviour
         {
             if (videoHider.isCreated)
             {
-                videoHider.videoScreen.GetComponent<VideoController>().pauseVideo();
+                videoHider.videoScreen.GetComponent<VideoPlayerController>().pauseVideo();
             }
             
             if (!videoHider.isCreated) {
                 videoHider.instanciate();
-                videoHider.videoScreen.GetComponent<VideoController>().pauseVideo();
+                videoHider.videoScreen.GetComponent<VideoPlayerController>().pauseVideo();
             }
 
             placeClipInFrontOfCamera();
@@ -77,7 +77,7 @@ public class TapToPlaceClip : MonoBehaviour
 
     public void lockAnchor()
     {
-        videoAnchor.transform.position = this.transform.parent.transform.position;
+        videoAnchor.transform.position = transform.parent.transform.position;
         anchorManager.AttachAnchor(videoAnchor, videoAnchor.GetComponent<VideoAnchor>().SavedAnchorFriendlyName);
     }
 

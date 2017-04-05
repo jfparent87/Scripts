@@ -2,8 +2,6 @@
 using System.Diagnostics;
 using UnityEngine.Video;
 
-[RequireComponent(typeof(AudioSource))]
-
 public class VideoPlayerController : MonoBehaviour
 {
 

@@ -19,7 +19,7 @@ public class TapToPlaceGhost : MonoBehaviour
     private Vector3 ghostObjectScale;
     private float heightCorrection = 1.5f;
     private float step;
-    private bool waitingToGoBack = false;
+    public bool waitingToGoBack = false;
     private bool moving = false;
 
     private void Start()
@@ -130,6 +130,7 @@ public class TapToPlaceGhost : MonoBehaviour
 
     void moveToGhostZone()
     {
+        waitingToGoBack = false;
         step = speed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, ghostZonePosition, step);
 
@@ -137,7 +138,7 @@ public class TapToPlaceGhost : MonoBehaviour
         transform.localScale = Vector3.MoveTowards(transform.localScale, ghostObjectScale, step * 0.8f);
 
         Quaternion ghostObjectRotation = GetComponentInParent<Transform>().rotation;
-        this.transform.rotation = ghostObjectRotation;
+        transform.rotation = ghostObjectRotation;
     }
 
     private void scaleToNormalSize()
@@ -163,10 +164,10 @@ public class TapToPlaceGhost : MonoBehaviour
     {
         waitingToGoBack = true;
         yield return new WaitForSeconds(15.0f);
-        if (gameObject.transform.position != ghostZonePosition)
+        if (gameObject.transform.position != ghostZonePosition && waitingToGoBack)
         {
             move = !move;
+            waitingToGoBack = false;
         }
-        waitingToGoBack = false;
     }
 }

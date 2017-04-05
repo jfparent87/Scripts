@@ -57,9 +57,9 @@ public class VideoHider : MonoBehaviour
         videoAnchor.lockAnchor();
         if (!isCreated)
         {
-            videoScreen.GetComponent<Hider>().show();
             //videoScreen.GetComponent<VideoController>().playVideo();
             videoScreen.GetComponent<VideoPlayerController>().playVideo();
+            StartCoroutine(waitAndShow());
             isCreated = true;
         }
     }
@@ -68,8 +68,8 @@ public class VideoHider : MonoBehaviour
     {
         if (isCreated)
         {
-            videoScreen.GetComponent<VideoController>().pauseVideo();
-            //videoScreen.GetComponent<VideoPlayerController>().pauseVideo();
+            //videoScreen.GetComponent<VideoController>().pauseVideo();
+            videoScreen.GetComponent<VideoPlayerController>().pauseVideo();
             videoScreen.GetComponent<Hider>().hide();
             isCreated = false;
         }
@@ -97,5 +97,11 @@ public class VideoHider : MonoBehaviour
     {
         yield return new WaitForSeconds(8.0f);
         instanciate();
+    }
+
+    public IEnumerator waitAndShow()
+    {
+        yield return new WaitForSeconds(0.5f);
+        videoScreen.GetComponent<Hider>().show();
     }
 }

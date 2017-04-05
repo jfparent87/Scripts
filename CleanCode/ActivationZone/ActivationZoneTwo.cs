@@ -3,10 +3,10 @@
 public class ActivationZoneTwo : MonoBehaviour
 {
 
-    public VideoController videoTwoController;
+    public VideoPlayerController videoTwoController;
     public Hider videoTwoHider;
     public VideoHider videoHiderTwo;
-    public VideoController videoThreeController;
+    public VideoPlayerController videoThreeController;
     public Hider videoThreeHider;
     public VideoHider videoHiderThree;
     public TapToPlaceCookingPot tapToPlaceCookingPot;

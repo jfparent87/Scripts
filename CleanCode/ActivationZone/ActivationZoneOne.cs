@@ -2,11 +2,11 @@
 
 public class ActivationZoneOne : MonoBehaviour {
 
-    public VideoController videoOneController;
+    public VideoPlayerController videoOneController;
     public Hider videoOneHider;
     public VideoHider videoHiderOne;
     public VideoHider videoHiderTwo;
-    public VideoController videoTwoController;
+    public VideoPlayerController videoTwoController;
     public Hider videoTwoHider;
     public GameObject campfire;
     public bool collided = false;
