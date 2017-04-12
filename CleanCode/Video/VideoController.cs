@@ -66,7 +66,7 @@ public class VideoController : MonoBehaviour {
             //TODO : event to activate 
             pauseVideo();
             activated = true;
-            if (gameObject.name == "wendake1")
+            if (gameObject.name == "Clip1")
             {
                 cookingPot.locked = false;
             }

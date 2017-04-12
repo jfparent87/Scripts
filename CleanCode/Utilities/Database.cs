@@ -32,6 +32,7 @@ public class Database : MonoBehaviour
     void Start()
     {
         resetAnchorConnection();
+        resetManager.OnSelect();
     }
 
     public void Update()
@@ -115,9 +116,9 @@ public class Database : MonoBehaviour
 
     public void fetchVideoHiders()
     {
-        firstVideoHider = GameObject.Find("wendake1").GetComponent<Hider>();
-        secondVideoHider = GameObject.Find("wendake2").GetComponent<Hider>();
-        thirdVideoHider = GameObject.Find("wendake3").GetComponent<Hider>();
+        firstVideoHider = GameObject.Find("Clip1").GetComponent<Hider>();
+        secondVideoHider = GameObject.Find("Clip2").GetComponent<Hider>();
+        thirdVideoHider = GameObject.Find("Clip3").GetComponent<Hider>();
     }
 
     public void fetchResetManager()
@@ -128,9 +129,9 @@ public class Database : MonoBehaviour
 
     public void fetchVideos()
     {
-        video1 = GameObject.Find("wendake1");
-        video2 = GameObject.Find("wendake2");
-        video3 = GameObject.Find("wendake3");
+        video1 = GameObject.Find("Clip1");
+        video2 = GameObject.Find("Clip2");
+        video3 = GameObject.Find("Clip3");
     }
 
     public void loadSizes()

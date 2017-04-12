@@ -7,7 +7,6 @@ public class VideoPlayerController : MonoBehaviour
 
     public RoomManager roomManager;
     public VideoPlayer movie;
-    //public AudioSource audioSource;
     public int activateAfterSeconds;
     public bool activated = false;
     public TapToPlaceCookingPot cookingPot;
@@ -23,11 +22,6 @@ public class VideoPlayerController : MonoBehaviour
         vsyncprevious = QualitySettings.vSyncCount;
         QualitySettings.vSyncCount = 0;
         movie = GetComponent<VideoPlayer>();
-        /*audioSource = GetComponent<AudioSource>();
-        audioSource.spatialize = true;
-        audioSource.spatialBlend = 1.0f;
-        audioSource.dopplerLevel = 0.0f;
-        audioSource.rolloffMode = AudioRolloffMode.Custom;*/
         activationTime = new System.TimeSpan(0, 0, activateAfterSeconds);
         timer = new Stopwatch();
     }
@@ -57,20 +51,21 @@ public class VideoPlayerController : MonoBehaviour
             QualitySettings.vSyncCount = vsyncprevious;
         }
 
-        /*if (!audioSource)
-        {
-            audioSource = GetComponent<AudioSource>();
-        }*/
-
         if (!activated && timer.Elapsed >= activationTime && !roomManager.editionMode)
         {
-            //TODO : event to activate 
             pauseVideo();
             activated = true;
-            if (gameObject.name == "wendake1")
+
+            // Insert event to activate for a certain object.
+            if (gameObject.name == "Clip1")
             {
                 cookingPot.locked = false;
             }
+            if (gameObject.name == "Clip2")
+            {
+                cookingPot.ingredientsLocked = false;
+            }
+
             gameObject.GetComponentInParent<Hider>().hide();
         }
 
@@ -86,9 +81,6 @@ public class VideoPlayerController : MonoBehaviour
         timer = new Stopwatch();
         activated = false;
         timerStarted = false;
-        /*audioSource.Stop();
-        audioSource.Play();
-        audioSource.Pause();*/
     }
 
     public void playVideo()
@@ -102,23 +94,12 @@ public class VideoPlayerController : MonoBehaviour
         {
             unPauseTimer();
         }
-
-        /*audioSource.UnPause();*/
     }
 
     public void pauseVideo()
     {
         stopTimer();
         movie.Pause();
-        /*try
-        {
-            audioSource.Pause();
-        }
-        catch
-        {
-            audioSource = GetComponent<AudioSource>();
-            audioSource.Pause();
-        }*/
     }
 
     public void startTimer()

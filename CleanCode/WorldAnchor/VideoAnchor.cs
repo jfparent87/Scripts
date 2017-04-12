@@ -5,8 +5,7 @@ using HoloToolkit.Unity.SpatialMapping;
 public class VideoAnchor : MonoBehaviour
 {
     public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
-
-    private bool placing = false;
+    public bool placing = false;
 
     protected WorldAnchorManager anchorManager;
     protected SpatialMappingManager spatialMappingManager;

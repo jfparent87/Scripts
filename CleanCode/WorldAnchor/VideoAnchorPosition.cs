@@ -6,8 +6,13 @@ public class VideoAnchorPosition : MonoBehaviour {
     public GameObject videoAnchor;
     public RoomManager roomManager;
 
-	void Update () {
-        if (transform.position != videoAnchor.transform.position && !roomManager.editionMode)
+    private void Start()
+    {
+        resetPosition();
+    }
+
+    void Update () {
+        if (transform.position != videoAnchor.transform.position && !GetComponentInChildren<TapToPlaceClip>().placing)
         {
             StartCoroutine(resetPosition());
         }

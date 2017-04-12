@@ -6,6 +6,7 @@ public class EditionManager : MonoBehaviour
     public List<VideoPlayerController> videoControllers;
     public List<VideoHider> videoHiders;
     public List<Hider> hiders;
+    public List<MeshRenderer> campfireMeshRenderers;
     public RoomManager roomManager;
 
     private VideoPlayerController currentVideo = null;
@@ -27,7 +28,8 @@ public class EditionManager : MonoBehaviour
     {
         foreach (var videoHider in videoHiders)
         {
-            if (videoHider.gameObject.name != "Wendake1")
+            videoHider.instanciate();
+            if (videoHider.gameObject.name != "Clip1Instanciator")
             {
                 videoHider.proximityStop = 10.0f;
             }
@@ -35,6 +37,11 @@ public class EditionManager : MonoBehaviour
             {
                 videoHider.proximityStop = 2.75f;
             }
+        }
+
+        foreach (var campfireMeshRenderer in campfireMeshRenderers)
+        {
+            campfireMeshRenderer.enabled = true;
         }
 
         foreach (var hider in hiders)
@@ -74,6 +81,11 @@ public class EditionManager : MonoBehaviour
             {
                 hider.show();
             }
+        }
+
+        foreach (var campfireMeshRenderer in campfireMeshRenderers)
+        {
+            campfireMeshRenderer.enabled = false;
         }
 
         currentVideo = null;

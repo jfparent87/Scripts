@@ -9,11 +9,17 @@ public class TapToPlaceCampfire : MonoBehaviour
     public GameObject campfireAnchor;
     public GameObject activationZone;
     public bool placing;
+    public float speed = 1.5f;
+    public Camera mainCamera;
+    public float distanceToCameraWhenPlacing = 1.2f;
 
     private RoomManager roomManager;
+    private Vector3 targetPosition;
 
     protected WorldAnchorManager anchorManager;
     protected SpatialMappingManager spatialMappingManager;
+    private float heightCorrection = 1.5f;
+    private float step;
 
     void Start()
     {
@@ -31,6 +37,8 @@ public class TapToPlaceCampfire : MonoBehaviour
 
         roomManager = GetComponentInParent<RoomManager>();
         placing = false;
+        GetComponent<MeshRenderer>().enabled = false;
+        targetPosition = mainCamera.transform.position;
     }
 
     void OnSelect()
@@ -47,7 +55,7 @@ public class TapToPlaceCampfire : MonoBehaviour
             {
                 if (activationZone)
                 {
-                    activationZone.transform.position = this.transform.position;
+                    activationZone.transform.position = transform.position;
                 }
                 lockAnchor();
                 tapToPlaceCookingPot.resetTargetFireTwo();
@@ -58,21 +66,14 @@ public class TapToPlaceCampfire : MonoBehaviour
 
     void Update()
     {
-        if (transform.position != campfireAnchor.transform.position)
+        if (transform.position != campfireAnchor.transform.position && !placing)
         {
             transform.position = campfireAnchor.transform.position;
         }
 
         if (placing)
         {
-            var headPosition = Camera.main.transform.position;
-            var gazeDirection = Camera.main.transform.forward;
-            RaycastHit hitInfo;
-            if (Physics.Raycast(headPosition, gazeDirection, out hitInfo,
-                30.0f, SpatialMapping.PhysicsRaycastMask))
-            {
-                transform.position = hitInfo.point;
-            }
+            placeCampfireInFrontOfCamera();
         }
     }
 
@@ -84,5 +85,12 @@ public class TapToPlaceCampfire : MonoBehaviour
     public void lockAnchor()
     {
         anchorManager.AttachAnchor(campfireAnchor, campfireAnchor.GetComponent<CampfireAnchor>().SavedAnchorFriendlyName);
+    }
+
+    private void placeCampfireInFrontOfCamera()
+    {
+        targetPosition = mainCamera.ScreenToWorldPoint(new Vector3(Screen.width / 2, (Screen.height / 2) + heightCorrection, mainCamera.nearClipPlane + distanceToCameraWhenPlacing));
+        step = speed * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
     }
 }

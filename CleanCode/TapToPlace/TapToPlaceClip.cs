@@ -38,18 +38,20 @@ public class TapToPlaceClip : MonoBehaviour
         roomManager = GetComponentInParent<RoomManager>();
     }
 
-    void OnSelect()
+    public void OnSelect()
     {
-        placing = !placing;
-
-        if (placing && roomManager.editionMode)
+        if (roomManager.editionMode)
         {
-            freeAnchor();
-        }
-        if (!placing && roomManager.editionMode)
-        {
-            videoAnchor.GetComponent<VideoAnchor>().resetPosition(transform.position);
-            lockAnchor();
+            placing = !placing;
+            if (placing)
+            {
+                freeAnchor();
+            }
+            else
+            {
+                videoAnchor.GetComponent<VideoAnchor>().resetPosition(transform.position);
+                lockAnchor();
+            }
         }
     }
 
@@ -84,13 +86,6 @@ public class TapToPlaceClip : MonoBehaviour
 
     private void placeClipInFrontOfCamera()
     {
-        var headPosition = Camera.main.transform.position;
-        var gazeDirection = Camera.main.transform.forward;
-
-        RaycastHit hitInfo;
-        if (Physics.Raycast(headPosition, gazeDirection, out hitInfo,
-            30.0f, SpatialMapping.PhysicsRaycastMask))
-        {
             targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, (Screen.height / 2) + heightCorrection, Camera.main.nearClipPlane + distanceToCameraWhenPlacing));
             step = speed * Time.deltaTime;
             transform.parent.position = Vector3.MoveTowards(transform.parent.position, targetPosition, step);
@@ -98,8 +93,7 @@ public class TapToPlaceClip : MonoBehaviour
             clipRotation = Camera.main.transform.localRotation;
             clipRotation.x = 0;
             clipRotation.z = 0;
-            this.transform.parent.rotation = clipRotation;
-        }
+            transform.parent.rotation = clipRotation;
     }
 
 }

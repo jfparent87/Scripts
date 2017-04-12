@@ -10,6 +10,7 @@ public class TapToPlaceCookingPot : MonoBehaviour
     public GameObject fireThree;
     public bool placing;
     public List<Ingredients> ingredients;
+    public bool ingredientsLocked;
     public float speed;
     public bool locked;
     public bool nearFireTwo;
@@ -31,6 +32,7 @@ public class TapToPlaceCookingPot : MonoBehaviour
     {
         fireOne = GameObject.Find("CampfireOne");
         locked = true;
+        ingredientsLocked = true;
         placing = false;
         nearFireTwo = false;
         nearFireThree = false;
@@ -57,9 +59,9 @@ public class TapToPlaceCookingPot : MonoBehaviour
 
             if (!placing)
             {
-                for (int ingredient = 0; ingredient < ingredients.Count; ingredient++)
+                foreach (var ingredient in ingredients)
                 {
-                    ingredients[ingredient].resetTarget();
+                    ingredient.resetTarget();
                 }
                 if (roomManager.editionMode)
                 {
@@ -79,6 +81,13 @@ public class TapToPlaceCookingPot : MonoBehaviour
 
         if (!roomManager.editionMode)
         {
+            if (!ingredientsLocked)
+            {
+                foreach (var ingredient in ingredients)
+                {
+                    ingredient.locked = false;
+                }
+            }
             if (transform.position == fireTwoPosition)
             {
                 arrivedAtFireTwo();

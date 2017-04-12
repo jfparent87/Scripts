@@ -6,6 +6,7 @@ public class Ingredients : MonoBehaviour {
     public GameObject cookingPot;
     public GameObject whiteSmoke;
     public float speed = 0.2f;
+    public bool locked = true;
 
     private bool nearCookingPot = false;
     private bool overCookingPotAchieved = false;
@@ -33,7 +34,7 @@ public class Ingredients : MonoBehaviour {
 
     void OnTriggerEnter(Collider collider)
     {
-        if (collider.GetComponent<Collider>().name == "CookingPotTriggerZone")
+        if (collider.GetComponent<Collider>().name == "CookingPotTriggerZone" && !locked)
         {
             resetTarget();
             nearCookingPot = true;
@@ -62,12 +63,13 @@ public class Ingredients : MonoBehaviour {
         if (nearCookingPot && overCookingPotAchieved && !insideCookingPotAchieved)
         {
             ingredientPlacement.placing = false;
+            speed = 0.2f;
             float step = speed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, insideCookingPot, step);
             if (!audioPlayed)
             {
                 whiteSmoke.GetComponent<ParticleSystem>().Play();
-                this.GetComponent<AudioSource>().Play();
+                GetComponent<AudioSource>().Play();
                 audioPlayed = true;
             }
         }

@@ -33,8 +33,8 @@ namespace HoloToolkit.Unity.InputModule
         public string hitObjectName = "";
         public GameObject meat;
         public GameObject mushroom;
-        public GameObject monitorZone001;
-        public GameObject monitorZone002;
+        //public GameObject monitorZone001;
+        //public GameObject monitorZone002;
 
         /// <summary>
         /// Position at which the gaze manager hit an object.
@@ -105,10 +105,6 @@ namespace HoloToolkit.Unity.InputModule
 
         private Color originalColor;
         private Color highlightColor;
-        private Color originalColorMonitor;
-        private Color highlightColorMonitor;
-        public ParticleSystem particleSystem001;
-        public ParticleSystem particleSystem002;
 
         protected override void Awake()
         {
@@ -146,8 +142,7 @@ namespace HoloToolkit.Unity.InputModule
             if (hitObject)
             {
                 hitObjectName = hitObject.name;
-                if (hitObject.name == "Meat" || hitObject.name == "Mushroom" || hitObject.name == "MonitorZoneCollider001"
-                    || hitObject.name == "MonitorZoneCollider002")
+                if (hitObject.name == "Meat" || hitObject.name == "Mushroom")
                 {
                     hightlightOn(hitObject);
                 }
@@ -160,14 +155,6 @@ namespace HoloToolkit.Unity.InputModule
                     if (mushroom)
                     {
                         hightlightOff(mushroom);
-                    }
-                    if (monitorZone001)
-                    {
-                        hightlightOff(monitorZone001);
-                    }
-                    if (monitorZone002)
-                    {
-                        hightlightOff(monitorZone002);
                     }
                 }
             }
@@ -332,50 +319,20 @@ namespace HoloToolkit.Unity.InputModule
         }
         void hightlightOn(GameObject gameObject)
         {
-            if (gameObject == monitorZone001)
+            gameObject.GetComponent<Renderer>().material.color = highlightColor;
+            if (gameObject != meat)
             {
-                ParticleSystem.EmissionModule emission = particleSystem001.emission;
-                emission.enabled = true;
+                hightlightOff(meat);
             }
-
-            if (gameObject == monitorZone002)
+            if (gameObject != mushroom)
             {
-                ParticleSystem.EmissionModule emission = particleSystem002.emission;
-                emission.enabled = true;
-            }
-
-            if (gameObject != monitorZone002 && gameObject != monitorZone001)
-            {
-                gameObject.GetComponent<Renderer>().material.color = highlightColor;
-                if (gameObject != meat)
-                {
-                    hightlightOff(meat);
-                }
-                if (gameObject != mushroom)
-                {
-                    hightlightOff(mushroom);
-                }
+                hightlightOff(mushroom);
             }
         }
 
         void hightlightOff(GameObject gameObject)
         {
-            if (gameObject == monitorZone001)
-            {
-                ParticleSystem.EmissionModule emission = particleSystem001.emission;
-                emission.enabled = false;
-            }
-
-            if (gameObject == monitorZone002)
-            {
-                ParticleSystem.EmissionModule emission = particleSystem002.emission;
-                emission.enabled = false;
-            }
-
-            if (gameObject != monitorZone002 && gameObject != monitorZone001 && gameObject)
-            {
-                gameObject.GetComponent<Renderer>().material.color = originalColor;
-            }
+            gameObject.GetComponent<Renderer>().material.color = originalColor;
         }
 
         #region Helpers

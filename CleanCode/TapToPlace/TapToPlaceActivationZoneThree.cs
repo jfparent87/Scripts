@@ -55,6 +55,6 @@ public class TapToPlaceActivationZoneThree : MonoBehaviour {
         activationZoneRotation = mainCamera.transform.localRotation;
         activationZoneRotation.x = 0;
         activationZoneRotation.z = 0;
-        this.transform.rotation = activationZoneRotation;
+        transform.rotation = activationZoneRotation;
     }
 }
