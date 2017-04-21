@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 using HoloToolkit.Unity;
 using HoloToolkit.Unity.SpatialMapping;
 
@@ -12,6 +13,7 @@ public class TapToPlaceCampfire : MonoBehaviour
     public float speed = 1.5f;
     public Camera mainCamera;
     public float distanceToCameraWhenPlacing = 1.2f;
+    public List<GameObject> activationZones;
 
     private RoomManager roomManager;
     private Vector3 targetPosition;
@@ -48,11 +50,19 @@ public class TapToPlaceCampfire : MonoBehaviour
             placing = !placing;
             if (placing)
             {
+                foreach (var activationZone in activationZones)
+                {
+                    activationZone.SetActive(false);
+                }
                 freeAnchor();
             }
 
             if (!placing)
             {
+                foreach (var activationZone in activationZones)
+                {
+                    activationZone.SetActive(true);
+                }
                 if (activationZone)
                 {
                     activationZone.transform.position = transform.position;

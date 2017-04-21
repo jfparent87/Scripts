@@ -21,6 +21,7 @@ public class StartMenu : MonoBehaviour
 
     void Start()
     {
+        setup = false;
         showMenu = true;
         targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, (Screen.height / 2) + heightCorrection, Camera.main.nearClipPlane + distanceToCameraWhenPlacing - 0.3985f));
         transform.position = targetPosition;
@@ -82,11 +83,21 @@ public class StartMenu : MonoBehaviour
         }
     }
 
+    IEnumerator slowUpdate()
+    {
+        while (!fadeOutStarted && !roomManager.editionMode && setup)
+        {
+            yield return new WaitForSeconds(2.0f);
+            Debug.Log("in slow update");
+            placeMenuInFrontOfCamera();
+        }
+    }
+
     private void placeMenuInFrontOfCamera()
     {
         targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, (Screen.height / 2), Camera.main.nearClipPlane + distanceToCameraWhenPlacing));
-        if (transform.position.x > targetPosition.x + 0.1f || transform.position.y > targetPosition.y + 0.035f || transform.position.z > targetPosition.z + 0.1f ||
-            transform.position.x < targetPosition.x - 0.1f || transform.position.y < targetPosition.y - 0.035f || transform.position.z < targetPosition.z - 0.1f)
+        if (transform.position.x > targetPosition.x + 0.1f || transform.position.y > targetPosition.y + 0.08f || transform.position.z > targetPosition.z + 0.1f ||
+            transform.position.x < targetPosition.x - 0.1f || transform.position.y < targetPosition.y - 0.08f || transform.position.z < targetPosition.z - 0.1f)
         {
             step = speed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
@@ -96,6 +107,12 @@ public class StartMenu : MonoBehaviour
             menuRotation *= Quaternion.Euler(-90, 0, 0);
             transform.rotation = menuRotation;
         }
+    }
+
+    public void resetPosition()
+    {
+        targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, (Screen.height / 2) + heightCorrection, Camera.main.nearClipPlane + distanceToCameraWhenPlacing - 0.3985f));
+        transform.position = targetPosition;
     }
 
 }

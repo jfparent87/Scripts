@@ -18,6 +18,6 @@ public class GhostSmokeFollower : MonoBehaviour {
 
     private void resetPosition()
     {
-        transform.position = new Vector3(ghostZone.transform.position.x, ghostZone.transform.position.y - 0.05f, ghostZone.transform.position.z -0.1f);
+        transform.position = new Vector3(ghostZone.transform.position.x -0.01f, ghostZone.transform.position.y - 0.01f, ghostZone.transform.position.z -0.01f);
     }
 }

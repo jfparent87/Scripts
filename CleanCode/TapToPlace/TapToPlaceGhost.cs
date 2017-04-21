@@ -7,13 +7,16 @@ public class TapToPlaceGhost : MonoBehaviour
     public bool move = false;
     public float speed;
     public GameObject ghostZone;
-    public float distanceToCameraWhenPlacing = 1.2f;
+    public float distanceToCameraWhenPlacing = 0.8f;
     public Vector3 objectScale;
     public RoomManager roomManager;
+    public GameObject ghostSmoke;
+    public GameObject ghostAnchor;
+    public float showingTime = 15.0f;
 
     private Vector3 targetPosition;
-    private Vector3 ghostZonePosition;
-    private bool targetPositionAchieved;
+    public Vector3 ghostZonePosition;
+    public bool targetPositionAchieved;
     private bool targetPositionAchievedOnce = false;
     private const float rotationSpeed = 10.0F;
     private Vector3 ghostObjectScale;
@@ -25,11 +28,12 @@ public class TapToPlaceGhost : MonoBehaviour
     private void Start()
     {
         resetTargetPosition();
+        resetPosition();
         scaleToNormalSize();
         roomManager = GetComponentInParent<RoomManager>();
     }
 
-    void OnSelect()
+    public void OnSelect()
     {
         if (roomManager.editionMode)
         {
@@ -41,23 +45,32 @@ public class TapToPlaceGhost : MonoBehaviour
             {
                 move = !move;
             }
+
         }
     }
 
     void Update()
     {
+        if (gameObject.transform.position != ghostAnchor.transform.position && !move && !moving && !ghostZone.GetComponent<GhostZone>().placing
+            && !waitingToGoBack)
+        {
+            gameObject.transform.position = ghostAnchor.transform.position;
+        }
+
         if (!roomManager.editionMode)
         {
             if (transform.position == targetPosition)
             {
                 targetPositionAchieved = true;
                 moving = false;
+                ghostSmoke.SetActive(false);
             }
 
-            if (transform.position == ghostZonePosition)
+            if (transform.position == ghostZonePosition && !move)
             {
                 targetPositionAchieved = false;
                 moving = false;
+                ghostSmoke.SetActive(true);
             }
 
             if (move && !targetPositionAchieved)
@@ -93,6 +106,7 @@ public class TapToPlaceGhost : MonoBehaviour
             {
                 GetComponent<Hider>().previousSize = new Vector3(0.8f, 0.8f, 0.8f);
             }
+
         }
         else
         {
@@ -110,7 +124,7 @@ public class TapToPlaceGhost : MonoBehaviour
     public void resetTargetPosition()
     {
         targetPosition = Camera.main.transform.position;
-        ghostZonePosition = ghostZone.transform.position;
+        ghostZonePosition = ghostAnchor.transform.position;
         transform.position = ghostZonePosition;
     }
 
@@ -120,7 +134,7 @@ public class TapToPlaceGhost : MonoBehaviour
         targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, (Screen.height / 2) + heightCorrection, Camera.main.nearClipPlane + distanceToCameraWhenPlacing));
         step = speed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
-        transform.localScale = Vector3.MoveTowards(transform.localScale, ghostObjectScale, step);
+        transform.localScale = Vector3.MoveTowards(transform.localScale, ghostObjectScale, step * 3.0f);
         
         if (!targetPositionAchievedOnce)
         {
@@ -130,15 +144,16 @@ public class TapToPlaceGhost : MonoBehaviour
 
     void moveToGhostZone()
     {
-        waitingToGoBack = false;
         step = speed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, ghostZonePosition, step);
 
         scaleToSmallSize();
-        transform.localScale = Vector3.MoveTowards(transform.localScale, ghostObjectScale, step * 0.8f);
+        transform.localScale = Vector3.MoveTowards(transform.localScale, ghostObjectScale, step * 3.0f);
 
         Quaternion ghostObjectRotation = GetComponentInParent<Transform>().rotation;
         transform.rotation = ghostObjectRotation;
+
+        waitingToGoBack = false;
     }
 
     private void scaleToNormalSize()
@@ -163,11 +178,15 @@ public class TapToPlaceGhost : MonoBehaviour
     IEnumerator waitAndGoBackInPlace()
     {
         waitingToGoBack = true;
-        yield return new WaitForSeconds(15.0f);
+        yield return new WaitForSeconds(showingTime);
         if (gameObject.transform.position != ghostZonePosition && waitingToGoBack)
         {
             move = !move;
-            waitingToGoBack = false;
         }
+    }
+
+    public void resetPosition()
+    {
+        gameObject.transform.position = ghostAnchor.transform.position;
     }
 }

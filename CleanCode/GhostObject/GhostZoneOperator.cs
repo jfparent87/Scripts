@@ -3,6 +3,7 @@
 public class GhostZoneOperator : MonoBehaviour {
 
     public GameObject ghostObject;
+    public TapToPlaceGhost tapToPlaceGhost;
 
     private GhostZone ghostZone;
     private RoomManager roomManager;
@@ -15,11 +16,18 @@ public class GhostZoneOperator : MonoBehaviour {
     }
 
     void OnSelect () {
-        ghostZone.selected();
+        if (tapToPlaceGhost.targetPositionAchieved && tapToPlaceGhost.waitingToGoBack)
+        {
+            tapToPlaceGhost.OnSelect();
+        }
+        else
+        {
+            ghostZone.selected();
+        }
     }
 	
 	void Update () {
-        if (transform.position != ghostObject.transform.position && roomManager.editionMode)
+        if (transform.position != ghostObject.transform.position)
         {
             resetPosition();
         }

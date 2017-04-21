@@ -9,7 +9,9 @@ public class ResetManager : MonoBehaviour {
     public List<VideoPlayerController> videoControllers;
     public List<TapToPlaceIngredient> ingredients;
     public List<VideoAnchorPosition> videoAnchorPositions;
+    public List<GhostAnchorPosition> ghostAnchorPositions;
     public GameObject database;
+    public StartMenu starMenu;
 
     void Start()
     {
@@ -18,7 +20,7 @@ public class ResetManager : MonoBehaviour {
 
     public void OnSelect()
     {
-        SceneManager.LoadScene("Scene002");
+        SceneManager.LoadScene("LongHouse");
     }
 
     IEnumerator resetGhostPositions(TapToPlaceGhost ghostZone)
@@ -45,10 +47,15 @@ public class ResetManager : MonoBehaviour {
         {
             StartCoroutine(videoAnchorPosition.resetPosition());
         }
+        foreach (var ghostAnchorPosition in ghostAnchorPositions)
+        {
+            StartCoroutine(ghostAnchorPosition.resetPosition());
+        }
         foreach (var videoController in videoControllers)
         {
             StartCoroutine(resetGhostPositions(videoController));
         }
+        starMenu.resetPosition();
     }
 
 }

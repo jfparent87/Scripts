@@ -9,7 +9,6 @@ public class SpeechManager2 : MonoBehaviour
     Dictionary<string, System.Action> keywords = new Dictionary<string, System.Action>();
     public ResetManager resetManager;
     public EditionManager editionManager;
-    public GameObject backgroundTest;
 
     private RoomManager roomManager;
 
@@ -32,11 +31,6 @@ public class SpeechManager2 : MonoBehaviour
         {
             roomManager.editionMode = false;
             editionManager.enterPlayMode();
-        });
-
-        keywords.Add("Background test", () =>
-        {
-            backgroundTest.SetActive(true);
         });
 
         // Tell the KeywordRecognizer about our keywords.

@@ -31,11 +31,11 @@ namespace HoloToolkit.Unity.InputModule
         public GameObject HitObject { get; private set; }
         public GameObject hitObject;
         public string hitObjectName = "";
+        /*
+        public List<GameObject> ingredients;
         public GameObject meat;
         public GameObject mushroom;
-        //public GameObject monitorZone001;
-        //public GameObject monitorZone002;
-
+        */
         /// <summary>
         /// Position at which the gaze manager hit an object.
         /// If no object is currently being hit, this will use the last hit distance.
@@ -129,35 +129,35 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
+        /*
         private void Start()
         {
             originalColor = new Color32(255, 255, 255, 255);
             highlightColor = new Color32(255, 125, 125, 255);
-        }
+            ingredients = new List<GameObject>(GameObject.FindGameObjectsWithTag("Ingredient"));
+        }*/
 
         private void Update()
         {
             hitObject = HitObject;
-
+            /*
             if (hitObject)
             {
                 hitObjectName = hitObject.name;
-                if (hitObject.name == "Meat" || hitObject.name == "Mushroom")
+
+                if (ingredients.Contains(hitObject))
                 {
                     hightlightOn(hitObject);
                 }
                 else
                 {
-                    if (meat)
+                    foreach (var ingredient in ingredients)
                     {
-                        hightlightOff(meat);
+                        hightlightOff(ingredient);
                     }
-                    if (mushroom)
-                    {
-                        hightlightOff(mushroom);
-                    }
+
                 }
-            }
+            }*/
 
             UpdateGazeInfo();
 
@@ -317,6 +317,7 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
         }
+        /*
         void hightlightOn(GameObject gameObject)
         {
             gameObject.GetComponent<Renderer>().material.color = highlightColor;
@@ -334,7 +335,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             gameObject.GetComponent<Renderer>().material.color = originalColor;
         }
-
+        */
         #region Helpers
 
         /// <summary>

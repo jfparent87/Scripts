@@ -63,9 +63,11 @@ public class VideoController : MonoBehaviour {
 
         if (!activated && timer.Elapsed >= activationTime && !roomManager.editionMode)
         {
-            //TODO : event to activate 
+            // TODO : event to activate 
+            // Add the event to activate after the line: activated = true;
             pauseVideo();
             activated = true;
+            // Event example: When Clip1 has reached the activationTime, unlock the cookingPot so the user can interact with it.
             if (gameObject.name == "Clip1")
             {
                 cookingPot.locked = false;

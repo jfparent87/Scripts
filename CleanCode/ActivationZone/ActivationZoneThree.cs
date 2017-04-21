@@ -84,6 +84,7 @@ public class ActivationZoneThree : MonoBehaviour
             foreach (var ghostObject in ghostObjects)
             {
                 ghostObject.GetComponent<TapToPlaceGhost>().resetTargetPosition();
+                ghostObject.GetComponent<TapToPlaceGhost>().resetPosition();
             }
         }
     }

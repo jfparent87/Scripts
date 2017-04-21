@@ -1,46 +1,30 @@
 ﻿using UnityEngine;
-using HoloToolkit.Unity;
-using HoloToolkit.Unity.SpatialMapping;
 
 public class GhostZone : MonoBehaviour {
 
     public GameObject ghostObject;
     public float speed = 0.5f;
     public float distanceToCameraWhenPlacing = 1.2f;
+    public GhostAnchor ghostAnchor;
+    public bool placing = false;
 
     private RoomManager roomManager;
     private Vector3 targetPosition;
-    private bool placing = false;
     private float heightCorrection = 1.5f;
     private float step;
 
-    protected WorldAnchorManager anchorManager;
-    protected SpatialMappingManager spatialMappingManager;
-
     void Start()
     {
-        anchorManager = WorldAnchorManager.Instance;
-        if (anchorManager == null)
-        {
-            Debug.LogError("This script expects that you have a WorldAnchorManager component in your scene.");
-        }
-
-        spatialMappingManager = SpatialMappingManager.Instance;
-        if (spatialMappingManager == null)
-        {
-            Debug.LogError("This script expects that you have a SpatialMappingManager component in your scene.");
-        }
-
         targetPosition = Camera.main.transform.position;
         roomManager = GetComponentInParent<RoomManager>();
 
         if (!roomManager.editionMode)
         {
-            this.GetComponentInChildren<Hider>().hide();
+            GetComponentInChildren<Hider>().hide();
         }
         else
         {
-            this.GetComponentInChildren<Hider>().show();
+            GetComponentInChildren<Hider>().show();
         }
     }
 
@@ -66,8 +50,9 @@ public class GhostZone : MonoBehaviour {
 
             if (!placing)
             {
-                lockAnchor();
+                ghostAnchor.resetPosition(gameObject.transform.position);
                 GetComponentInChildren<TapToPlaceGhost>().resetTargetPosition();
+                lockAnchor();     
             }
         }
     }
@@ -87,12 +72,12 @@ public class GhostZone : MonoBehaviour {
 
     public void freeAnchor()
     {
-        anchorManager.RemoveAnchor(this.transform.gameObject);
+        ghostAnchor.freeAnchor();
     }
 
     public void lockAnchor()
     {
-        anchorManager.AttachAnchor(this.transform.gameObject, this.GetComponent<GhostAnchor>().SavedAnchorFriendlyName);
+        ghostAnchor.lockAnchor();
     }
 
     private void resetRotation()
@@ -101,7 +86,7 @@ public class GhostZone : MonoBehaviour {
         ghostZoneRotation.x = 0;
         ghostZoneRotation.z = 0;
         ghostZoneRotation *= Quaternion.Euler(0, 180f, 0);
-        this.transform.rotation = ghostZoneRotation;
+        transform.rotation = ghostZoneRotation;
     }
 
     private void placeGhostZone()
